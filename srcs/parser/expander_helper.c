@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:42:08 by cjeon             #+#    #+#             */
-/*   Updated: 2021/12/25 18:39:42 by cjeon            ###   ########.fr       */
+/*   Updated: 2021/12/30 02:02:58 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ size_t	replace_variable(char **str, const size_t start)
 	char	*newstr;
 
 	len = 1;
-	while ((*str)[len + start] != '\0' && exp_isidentifier((*str)[len + start]))
+	while ((*str)[len + start] != '\0' \
+		&& exp_isidentifier((*str)[len + start]))
 		len++;
 	if (len == 1)
 	{
