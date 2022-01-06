@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:40:09 by cjeon             #+#    #+#             */
-/*   Updated: 2021/12/26 20:50:35 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/05 05:39:38 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,16 @@ typedef enum e_token_type
 	TK_SUBSHELL,
 	TK_OPERATOR,
 	TK_WILDCARD,
-	TK_STRING
+	TK_STRING,
+	TK_COMMAND,
+	TK_ARG,
+	TK_HEREDOC,
+	TK_REDIR_INPUT,
+	TK_REDIR_OUTPUT,
+	TK_APPEND,
+	TK_OR,
+	TK_AND,
+	TK_PIPE
 }	t_token_type;
 
 typedef struct s_token_node

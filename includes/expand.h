@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:11:09 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/02 04:30:29 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/05 04:45:48 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_wildcard_info
 	char		*first_token;
 	char		*last_token;
 	char		*basename;
+	char		*nomatch;
 }	t_wildcard_info;
 
 typedef t_expander_result	(*t_expander)(t_expander_context *context);
