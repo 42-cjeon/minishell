@@ -6,16 +6,18 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 23:15:08 by cjeon             #+#    #+#             */
-/*   Updated: 2021/12/26 20:44:36 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/07 05:22:32 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "tokenize.h"
+
 #include "expand.h"
+#include "lex.h"
+#include "tokenize.h"
 
 int main(int argc, const char *argv[])
 {
@@ -30,7 +32,16 @@ int main(int argc, const char *argv[])
 		"SUBSHELL",
 		"OPERATOR",
 		"WILDCARD",
-		"STRING"
+		"STRING",
+		"COMMAND",
+		"ARG",
+		"HEREDOC",
+		"REDIR_INPUT",
+		"REDIR_OUTPUT",
+		"APPEND",
+		"OR",
+		"AND",
+		"PIPE"
 	};
 	assert(argc == 2);
 
@@ -51,6 +62,8 @@ int main(int argc, const char *argv[])
 		printf("Expand Failed with status : %d\n", ret);
 		return (ret);
 	}
+
+	lex(tokenv);
 
 	node = tokenv->head;
 	while (node)
