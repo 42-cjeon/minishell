@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/25 00:08:39 by cjeon             #+#    #+#             */
+/*   Created: 2021/12/5 00:08:39 by cjeon             #+#    #+#             */
 /*   Updated: 2022/01/02 20:00:31 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -80,22 +80,25 @@ int	add_first_token(t_wildcard_info *wcinfo, const char *path)
 
 	if (path == NULL)
 	{
-		wcinfo->basename = ft_strdup("./");
+		wcinfo->basename = ft_strdup("");
 		wcinfo->first_token = ft_strdup("");
+		wcinfo->nomatch = ft_strdup("*");
 	}
 	else if (!find_last_slash(path, &last_slash, &path_len))
 	{
-		wcinfo->basename = ft_strdup("./");
+		wcinfo->basename = ft_strdup("");
 		wcinfo->first_token = ft_strdup(path);
+		wcinfo->nomatch = ft_strdup(path);
 	}
 	else
 	{
 		wcinfo->basename = ft_substr(path, 0, last_slash + 1);
-		wcinfo->first_token = ft_substr(path, last_slash + 1, path_len - last_slash);
+		wcinfo->first_token = ft_substr(path, last_slash + 1, \
+											path_len - last_slash);
+		wcinfo->nomatch = ft_strdup(path);
 	}
-	if (wcinfo->basename == NULL || wcinfo->basename == NULL)
-		return (_add_first_token(&(t_add_first_token){wcinfo}, 1));
-	return (_add_first_token(&(t_add_first_token){wcinfo}, 0));
+	return (wcinfo->basename == NULL || wcinfo->basename == NULL \
+			|| wcinfo->nomatch == NULL);
 }
 
 typedef struct s_get_filenames
@@ -116,42 +119,18 @@ void strv_clear(t_str_node *node)
 	}
 }
 
-int _append_filenames(t_get_filenames *vars, int result)
-{
-	t_token_node *next;
-	t_token_node *curr;
-
-	if (vars->wcinfo)
-	{
-		//strv_clear(vars->wcinfo->wildcard);
-		//free(vars->wcinfo->first_token);
-		//free(vars->wcinfo->last_token);
-		//free(vars->wcinfo->basename);
-	}
-	if (result < 0)
-	{
-		curr = vars->filenames->head;
-		while (curr)
-		{
-			next = curr->next;
-			//free(curr);
-			curr = next;
-		}
-	}
-	return (result);
-}
-
-t_str_node *str_node_new(char *str)
+int str_node_new(char *str, t_str_node **result)
 {
 	t_str_node *node;
 
 	node = malloc(sizeof(t_str_node));
 	if (node == NULL)
-		return (NULL);
+		return (1);
 	node->str = str;
 	node->len = ft_strlen(str);
 	node->next = NULL;
-	return (node);
+	*result = node;
+	return (0);
 }
 
 void	str_node_push(t_wildcard_info *wcinfo, t_str_node **ptail, t_str_node *node)
@@ -169,10 +148,10 @@ void	str_node_push(t_wildcard_info *wcinfo, t_str_node **ptail, t_str_node *node
 	wcinfo->total_len += node->len;
 }
 
-int ft_strcmp_part(const char *heystack, const char *niddle)
+int ft_strcmp_part(const char *heystack, const char *needle)
 {
-	while (*niddle != '\0')
-		if (*heystack++ != *niddle++)
+	while (*needle != '\0')
+		if (*heystack++ != *needle++)
 			return (0);
 	return (1);
 }
@@ -204,6 +183,10 @@ int match_filename(t_wildcard_info *wcinfo, const char *filename)
 	filename_len = ft_strlen(filename);
 	if (filename_len < wcinfo->total_len + first_len + last_len)
 		return (0);
+	if (!ft_strncmp(filename, ".", ft_strlen(filename)) || !ft_strncmp(filename, "..", ft_strlen(filename)))
+		return (0);
+	if (*filename == '.' && *wcinfo->first_token != '.')
+		return (0);
 	if (!ft_strcmp_part(filename, wcinfo->first_token) || !ft_strcmp_part(filename + filename_len - last_len, wcinfo->last_token))
 		return (0);
 	return (match_part(wcinfo->wildcard, filename + first_len, filename_len - last_len, wcinfo->total_len));
@@ -222,7 +205,7 @@ int append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, t_tokenv *filenam
 		if (match_filename(wcinfo, dir->d_name))
 		{
 			some_matched = TRUE;
-			token = ft_strdup(dir->d_name);
+			token = ft_strjoin(wcinfo->basename, dir->d_name);
 			if (token == NULL)
 				return (EXP_EMALLOC);
 			if (tokenv_assign_push(filenames, token, TK_STRING))
@@ -240,7 +223,10 @@ int append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 	DIR	*ent;
 	int	result;
 
-	ent = opendir(wcinfo->basename);
+	if (*wcinfo->basename)
+		ent = opendir(wcinfo->basename);
+	else
+		ent = opendir("./");
 	if (ent == NULL)
 	{
 		if (errno == ENOENT)
@@ -249,58 +235,16 @@ int append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 	}
 	result = append_matched_for_each(ent, wcinfo, filenames);
 	closedir(ent);
+	if (result == EXP_EMALLOC)
+		tokenv_clear(filenames);
 	return (result);
 }
 
-void __print(t_wildcard_info *wcinfo)
-{
-	t_str_node *node;
-	printf("BASENAME=[%s]\n", wcinfo->basename);
-	printf("FIRST_TK=[%s]\n", wcinfo->first_token);
-	printf("LAST_TK=[%s]\n", wcinfo->last_token);
-	printf("TL=[%zu]\n", wcinfo->total_len);
-	printf("<wildcard>\n");
+//FIX
 
-	node = wcinfo->wildcard;
-	while (node)
-	{
-		printf("\tWC=[%s]\n", node->str);
-		node = node->next;
-	}
-	printf("</wildcard>\n");
-}
-int append_filenames(t_token_node *tokens, t_tokenv *filenames)
-{
-	t_wildcard_info	wcinfo;
-	t_str_node		*temp;
-	t_str_node		*tail;
+//int get
 
-	tail = NULL;
-	temp = NULL;
-	ft_memset(&wcinfo, 0, sizeof(t_wildcard_info));
-	if (add_first_token(&wcinfo, tokens->token))
-		return (_append_filenames(&(t_get_filenames){filenames, &wcinfo}, -1));
-	tokens = tokens->next;
-	while (tokens && \
-		(tokens->type == TK_STRING || tokens->type == TK_WILDCARD))
-	{
-		if (tokens->type == TK_STRING)
-		{
-			if (temp)
-				str_node_push(&wcinfo, &tail, temp);
-			temp = str_node_new(tokens->token);
-			if (temp == NULL)
-				return (_append_filenames(&(t_get_filenames){filenames, &wcinfo}, -1));
-		}
-		tokens = tokens->next;
-	}
-	wcinfo.last_token = temp->str;
-	free(temp);
-	return (_append_filenames(&(t_get_filenames){filenames, &wcinfo}, \
-		append_matched(&wcinfo, filenames)));
-}
-
-t_bool exp_is_wildcard(t_token_node *curr, t_token_node *next)
+t_bool exp_is_wildcard_start(t_token_node *curr, t_token_node *next)
 {
 	if (curr->type == TK_WILDCARD)
 		return (TRUE);
@@ -309,64 +253,151 @@ t_bool exp_is_wildcard(t_token_node *curr, t_token_node *next)
 	return (FALSE);
 }
 
-int append_nomatch(t_expander_context *context)
+int append_nomatch(t_wildcard_info *wcinfo, t_tokenv *tokenv)
 {
-	t_token_node *curr;
-	char *temp;
+	char			*token;
+	t_token_node	*node;
 
-	curr = context->curr->next;
-	if (context->curr->type == TK_WILDCARD)
-		context->curr->token = ft_strdup("*");
-	if (context->curr->token == NULL)
+	token = ft_strdup(wcinfo->nomatch);
+	if (token == NULL)
 		return (EXP_EMALLOC);
-	while (curr && (curr->type == TK_STRING || curr->type == TK_WILDCARD))
+	node = token_node_new(token, TK_STRING);
+	if (node == NULL)
 	{
-		if (curr->type == TK_STRING)
-			temp = ft_strjoin(context->curr->token, curr->token);
-		else
-			temp = ft_strjoin(context->curr->token, "*");
-		if (temp == NULL)
-			return (EXP_EMALLOC);
-		//free(context->curr->token);
-		//free(curr->token);
-		context->curr->token = temp;
-		context->curr->next = curr->next;
-		//free(curr);
-		curr = context->curr->next;
+		free(token);
+		return (EXP_EMALLOC);
 	}
-	context->curr->type = TK_STRING;
-	return (EXP_CONTINUE);
+	tokenv->head = node;
+	tokenv->tail = node;
+	return (EXP_SUCCESS);
+}
+
+t_bool exp_iswildcard(t_token_node *node)
+{
+	if (node == NULL)
+		return (FALSE);
+	return (node->type == TK_STRING || node->type == TK_WILDCARD);
+}
+
+void wildcard_push_last(t_wildcard_info *wcinfo, t_str_node **tail, t_str_node **last)
+{
+	if (*last)
+		str_node_push(wcinfo, tail, *last);
+	*last = NULL;
+}
+
+void move_next_token_node(t_expander_context *context, int new_node_fail)
+{
+	context->prev->next = context->curr->next;
+	if (new_node_fail)
+		free(context->curr->token);
+	free(context->curr);
+	context->curr = context->prev->next;
+}
+
+int append_nomatch_str(t_wildcard_info *wcinfo, char *token)
+{
+	char *new_str;
+
+	new_str = ft_strjoin(wcinfo->nomatch, token);
+	if (new_str == NULL)
+		return (1);
+	free(wcinfo->nomatch);
+	wcinfo->nomatch = new_str;
+	return (0);
+}
+
+int append_last_token(t_wildcard_info *wcinfo, t_str_node *last)
+{
+	if (last)
+		wcinfo->last_token = last->str;
+	else
+		wcinfo->last_token = ft_strdup("");
+	free(last);
+	if (wcinfo->last_token == NULL)
+		return (EXP_EMALLOC);
+	return (EXP_SUCCESS);
+}
+
+int get_wildcard_strs(t_expander_context *context, t_wildcard_info *wcinfo)
+{
+	t_str_node	*tail;
+	t_str_node	*last;
+	int			nomatch_fail;
+	int			new_node_fail;
+
+	tail = NULL;
+	last = NULL;
+	new_node_fail = 0;
+	nomatch_fail = 0;
+	while (exp_iswildcard(context->curr))
+	{
+		wildcard_push_last(wcinfo, &tail, &last);
+		if (context->curr->type == TK_STRING)
+		{
+			new_node_fail = str_node_new(context->curr->token, &last);
+			nomatch_fail = append_nomatch_str(wcinfo, \
+				context->curr->token);
+		}
+		else
+			nomatch_fail = append_nomatch_str(wcinfo, "*");
+		move_next_token_node(context, new_node_fail);
+		if (new_node_fail || nomatch_fail)
+			return (EXP_EMALLOC);
+	}
+	return (append_last_token(wcinfo, last));
+}
+
+void wildcard_info_clear(t_wildcard_info *wcinfo)
+{
+	free(wcinfo->basename);
+	free(wcinfo->first_token);
+	free(wcinfo->last_token);
+	free(wcinfo->nomatch);
+	strv_clear(wcinfo->wildcard);
+}
+
+int _get_wildcard_info(t_wildcard_info *wcinfo, int status)
+{
+	if (status)
+		wildcard_info_clear(wcinfo);
+	return (status);
+}
+
+int	get_wildcard_info(t_expander_context *context, t_wildcard_info *wcinfo)
+{
+	if (add_first_token(wcinfo, context->curr->token))
+		return (_get_wildcard_info(wcinfo, EXP_EMALLOC));
+	context->prev->next = context->curr->next;
+	free(context->curr->token);
+	free(context->curr);
+	context->curr = context->prev->next;
+	if (get_wildcard_strs(context, wcinfo))
+		return (_get_wildcard_info(wcinfo, EXP_EMALLOC));
+	return (_get_wildcard_info(wcinfo, EXP_SUCCESS));
 }
 
 t_expander_result	expand_filename(t_expander_context *context)
 {
-	t_token_node	*next;
-	t_tokenv		expanded_filenamev;
+	t_tokenv		matched;
+	t_wildcard_info	wcinfo;
 	int				result;
 
-	if (!exp_is_wildcard(context->curr, context->curr->next))
+	if (!exp_is_wildcard_start(context->curr, context->curr->next))
 		return (EXP_CONTINUE);
-	tokenv_init(&expanded_filenamev);
-	result = append_filenames(context->curr, &expanded_filenamev);
+	ft_memset(&wcinfo, 0, sizeof(t_wildcard_info));
+	if (get_wildcard_info(context, &wcinfo))
+		return (EXP_EMALLOC);
+	ft_memset(&matched, 0, sizeof(t_tokenv));
+	result = append_matched(&wcinfo, &matched);
 	if (result == EXP_EMALLOC)
 		return (EXP_EMALLOC);
 	else if (result == EXP_NOMATCH)
-		return (append_nomatch(context));
-	if (context->prev == NULL)
-		context->tokenv->head = expanded_filenamev.head;
-	else
-		context->prev->next = expanded_filenamev.head;
-	while (context->curr && \
-		(context->curr->type == TK_STRING || context->curr->type == TK_WILDCARD))
-	{
-		next = context->curr->next;
-		free(context->curr);
-		context->curr = next;
-	}
-	expanded_filenamev.tail->next = context->curr;
-	context->jump_to = expanded_filenamev.tail->next;
-	context->curr = expanded_filenamev.tail;
-	return (EXP_JUMP);
+		if (append_nomatch(&wcinfo, &matched))
+			return (EXP_EMALLOC);
+	context->prev->next = matched.head;
+	matched.tail->next = context->curr;
+	return (EXP_STAY);
 }
 
 t_expander_result	expand_word_splitting(t_expander_context *context)
@@ -443,6 +474,20 @@ t_expander_result	merge_string_tokens(t_expander_context *context)
 	return (EXP_STAY);
 }
 
+t_expander_result del_space_node(t_expander_context *context)
+{
+	if (context->curr->type != TK_SPACE)
+		return (EXP_CONTINUE);
+	
+	context->jump_to = context->curr->next;
+	if (context->prev == NULL)
+		context->tokenv->head = context->jump_to;
+	else
+		context->prev->next = context->jump_to;
+	free(context->curr);
+	return (EXP_JUMP);
+}
+
 t_expander_result	for_each_node(t_tokenv *tokenv, t_expander expander)
 {
 	t_expander_context	context;
@@ -481,5 +526,9 @@ t_expander_result	expand(t_tokenv *tokenv)
 	result = for_each_node(tokenv, merge_string_tokens);
 	if (result != EXP_SUCCESS)
 		return (result);
-	return (for_each_node(tokenv, expand_filename));
+	result = for_each_node(tokenv, expand_filename);
+	if (result != EXP_SUCCESS)
+		return (result);
+	for_each_node(tokenv, del_space_node);
+	return (EXP_SUCCESS);
 }
