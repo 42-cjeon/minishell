@@ -6,7 +6,7 @@
 /*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/11 19:54:52 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/11 20:01:58 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ typedef enum e_redir_type
 	REDIR_APPEND
 }	t_redir_type;
 
+typedef enum e_command_type
+{
+	C_COMMAND,
+	C_SUBSHELL
+}	t_command_type;
+
 typedef enum e_command_node_type
 {
 	C_OR,
@@ -47,17 +53,17 @@ typedef struct s_redir_info
 
 typedef int  t_pipe[2];
 
-typedef union u_cmd
+typedef union u_cmd_data
 {
 	char	**c;
 	char	*s;
-}	t_cmd;
+}	t_cmd_data;
 
 typedef struct s_command
 {
-	int type;
+	int				type;
 	t_redir_info	redir_info[2];
-	char			**command;
+	t_cmd_data		data;
 }	t_command;
 
 typedef struct s_pipeline

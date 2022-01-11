@@ -6,7 +6,7 @@
 /*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/11 19:54:53 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/11 20:11:27 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,15 +159,15 @@ int parse_command(t_parser_context *context, t_command *command)
 {	
 	size_t index;
 
-	command->type = 
-	command->command = ft_malloc(sizeof(char *) * (calc_command_len(context->curr) + 1));
+	command->type = C_COMMAND;
+	command->data.c = ft_malloc(sizeof(char *) * (calc_command_len(context->curr) + 1));
 	index = 0;
 	while (context->curr && context->curr->type == TK_STRING)
 	{
-		command->command[index++] = context->curr->token;
+		command->data.c[index++] = context->curr->token;
 		context->curr = context->curr->next;
 	}
-	command->command[index] = NULL;
+	command->data.c[index] = NULL;
 	return (P_SUCCESS);
 }
 
@@ -188,12 +188,17 @@ int parse_pipeline(t_parser_context *context)
 
 	pipeline = get_pipeline(context->curr);
 	index = 0;
+	while (context->curr->type == TK_PIPE)
+	{
+		add_pipeline();
+		contex
+		index++;
+	}
 	if (context->curr->type == TK_SUBSHELL)
 		pipeline->commands
 	if (context->curr->type != TK_STRING)
 	return (parse_logical_oper(context));
 }
-
 
 int parse(t_tokenv *tokenv, t_line_info *li)
 {
