@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 05:24:29 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/07 05:31:33 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/10 15:40:29 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ t_bool streq(const char *s1, const char *s2)
 	return (*s1 == *s2);
 }
 
-int select_next_lexer(int prev_type, t_token_node *node)
+int select_next_lexer(t_token_node *node)
 {
-	if (node == NULL)
-		return (LEX_SUCCESS);
 	if (node->type == TK_OPERATOR)
 	{
 		if (streq(node->token, ">"))
@@ -57,14 +55,11 @@ int select_next_lexer(int prev_type, t_token_node *node)
 int lex(t_tokenv *tokenv)
 {
 	t_token_node	*node;
-	int				prev_type;
 
 	node = tokenv->head;
-	prev_type = TK_OPERATOR;
 	while (node)
 	{
-		select_next_lexer(prev_type, node);
-		prev_type = node->type;
+		select_next_lexer(node);
 		node = node->next;
 	}
 	return (0);
