@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/11 11:21:34 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/11 19:54:52 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 #include <unistd.h>
 #include "tokenize.h"
+
+typedef enum e_parser_result
+{
+	P_SUCCESS,
+	P_ESYNTEX,
+	P_EUNEXPECTED_ENDL
+}	t_parser_result;
 
 typedef enum e_redir_type
 {
@@ -34,18 +41,28 @@ typedef enum e_command_node_type
 
 typedef struct s_redir_info
 {
-	t_redir_type	in_type;
-	char			*in_target;
-	t_redir_type	out_type;
-	char			*out_target;
+	t_redir_type	type;
+	char			*target;
 }	t_redir_info;
 
 typedef int  t_pipe[2];
-typedef char **t_command;
+
+typedef union u_cmd
+{
+	char	**c;
+	char	*s;
+}	t_cmd;
+
+typedef struct s_command
+{
+	int type;
+	t_redir_info	redir_info[2];
+	char			**command;
+}	t_command;
 
 typedef struct s_pipeline
 {
-	size_t		length;
+	size_t		len;
 	pid_t		*childs;
 	t_pipe		*pipes;
 	t_command	*commands;
@@ -55,7 +72,6 @@ typedef struct s_command_node
 {
 	t_command_node_type		type;
 	t_pipeline				pipeline;
-	t_redir_info			redir_info;
 	struct s_command_node	*next;
 }	t_command_node;
 
@@ -72,4 +88,7 @@ typedef struct s_parser_context
 
 }	t_parser_context;
 
+int parse_pipeline(t_parser_context *context);
+int next_pipeline(t_parser_context *context);
+int parse_logical_oper(t_parser_context *context);
 #endif
