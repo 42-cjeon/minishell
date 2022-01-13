@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malloc.c                                        :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/09 20:34:39 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/13 22:06:11 by hanelee          ###   ########.fr       */
+/*   Created: 2022/01/12 23:28:47 by hanelee           #+#    #+#             */
+/*   Updated: 2022/01/13 22:04:54 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	*ft_malloc(size_t size)
-{
-	void	*ret;
+# include <unistd.h>
+# include <string.h>
+# include <errno.h>
+# include "libft.h"
 
-	ret = malloc(size);
-	if (ret == NULL)
-		ft_perror_texit("minishell", 1);
-	return (ret);
-}
+# define BUF_SIZE	128
+
+void	*ft_malloc(size_t size);
+
+void	ft_perror(const char *prefix);
+void	ft_perror_texit(const char *prefix, int status);
+void	ft_perror_custom(const char *prefix, const char *str);
+void	ft_perror_custom_texit(const char *prefix, const char *str, int status);
+
+#endif
