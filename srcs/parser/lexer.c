@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 05:24:29 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/10 15:40:29 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/16 19:16:59 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,14 @@ int select_next_lexer(t_token_node *node)
 int lex(t_tokenv *tokenv)
 {
 	t_token_node	*node;
+	int result;
 
 	node = tokenv->head;
 	while (node)
 	{
-		select_next_lexer(node);
+		result = select_next_lexer(node);
+		if (result != LEX_SUCCESS)
+			return (result);
 		node = node->next;
 	}
 	return (0);

@@ -13,7 +13,7 @@ vpath %.c $(SRCS_ROOT) $(PARSER_ROOT)
 PARSER_SRCS := tk_types_escape.c tk_types_operator.c \
 	token_container.c tokenizer_helper.c tokenizer_normal.c \
 	tokenizer_pair.c tokenize.c exp_types.c expander_helper.c \
-	expander_split.c expand.c lexer.c
+	expander_split.c expand.c lexer.c parser.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
 
 SHELL_SRCS := shell.c
