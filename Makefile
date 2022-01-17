@@ -32,7 +32,6 @@ TSRCS = $(PARSER_SRCS) $(TEST_SRCS)
 TOBJS = $(TSRCS:.c=.o)
 # --            -- #
 
-
 LIBFT_ROOT = $(SRCS_ROOT)/libft
 LIBFT = $(LIBFT_ROOT)/libft.a
 
