@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/16 17:41:03 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/19 14:08:56 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h>
-
-# define PERROR_BUF_SIZE	128
-# define MALLOC_FAIL_PREFIX "minishell"
+# include "llist.h"
 
 typedef struct s_list
 {
@@ -68,10 +66,11 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
-void	*ft_malloc(size_t size);
 void	ft_perror(const char *prefix);
 void	ft_perror_texit(const char *prefix, int status);
 void	ft_perror_custom(const char *prefix, const char *str);
 void	ft_perror_custom_texit(const char *prefix,
 			const char *str, int status);
+void	*ft_malloc(size_t size);
+
 #endif

@@ -12,7 +12,9 @@ SRCS = \
 	ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
 	ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
+	ft_llist.c ft_llist_node.c ft_llist_push.c ft_llist_pop.c \
 	ft_malloc.c ft_perror.c
+
 OBJS = $(SRCS:.c=.o)
 
 $(NAME) : $(OBJS)
