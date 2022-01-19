@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/17 16:03:03 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/19 14:08:56 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h>
+# include "llist.h"
 
 typedef struct s_list
 {

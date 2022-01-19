@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:22:03 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/17 15:52:52 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/17 17:46:54 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ char	*shell_readline(void)
 
 void	shell_add_history(const char *str)
 {
-	if (str && (str[0] != '\0'))
-		add_history(str);	
+	if (str && ft_isprint(str[0]))
+		add_history(str);
 }
