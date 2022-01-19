@@ -4,7 +4,7 @@ NAME = minishell
 
 SRCS_ROOT = srcs
 PARSER_ROOT = $(SRCS_ROOT)/parser
-
+UTILS_ROOT = $(SRCS_ROOT)/utils
 INCLUDE_ROOT = includes
 
 vpath %.c $(SRCS_ROOT) $(PARSER_ROOT)
@@ -14,6 +14,8 @@ PARSER_SRCS := tk_types_escape.c tk_types_operator.c \
 	tokenizer_pair.c tokenize.c exp_types.c expander_helper.c \
 	expander_split.c expand.c lexer.c parser.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
+UTILS_SRCS := ft_string.c
+UTILS_SRCS := $(addprefix $(UTILS_ROOT)/, $(UTILS_SRCS))
 MAIN_SRCS := minishell.c
 MAIN_SRCS := $(addprefix $(SRCS_ROOT)/, $(MAIN_SRCS))
 
