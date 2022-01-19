@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/16 17:13:14 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/17 15:51:28 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct s_pipeline
 {
 	size_t		len;
 	pid_t		*childs;
-	t_pipe		*pipes;
 	t_command	*commands;
 }	t_pipeline;
 
