@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/17 16:00:46 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 06:05:03 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ t_pipeline *get_pipeline(t_token_node *node)
 			len++;
 		node = node->next;
 	}
-	pipeline->len = len;
 	pipeline = ft_malloc(sizeof(t_pipeline));
+	pipeline->len = len;
 	pipeline->childs = ft_calloc(len, sizeof(pid_t));
 	pipeline->commands = ft_calloc(len, sizeof(t_command));
 	return (pipeline);
@@ -195,6 +195,7 @@ int validate_command(t_token_node *curr, t_command *cmd)
 			result = parse_redir(curr, cmd);
 			if (result != P_SUCCESS)
 				return (result);
+			curr = curr->next;
 		}
 		else
 			cmd_len++;
