@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:31:22 by cjeon             #+#    #+#             */
-/*   Updated: 2021/12/25 17:32:11 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 05:27:48 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_tokenv *split_token(char *token)
 {
 	t_tokenv			*tokenv;
 	t_expander_result	result;
-	tokenv = malloc(sizeof(tokenv));
+	
+	tokenv = malloc(sizeof(t_tokenv));
 	if (tokenv == NULL)
 		return (NULL);
 	tokenv_init(tokenv);
