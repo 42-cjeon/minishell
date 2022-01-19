@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:28:03 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/19 14:11:23 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/19 16:49:01 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_llnode	*ft_llist_pop(t_llist *lst, void *content)
 		ft_llnode_trim(node);
 		--(lst->size);
 	}
-	lst->content_delete(&content);
+	lst->content_delete(content);
 	return (node);
 }
 
@@ -78,7 +78,7 @@ t_llnode	*ft_llist_search(t_llist *lst, const void *content)
 	cur = lst->first;
 	while (cur != NULL)
 	{
-		if (lst->content_issame(cur->content, content))
+		if (!(lst->content_compare(cur->content, content)))
 			break ;
 		cur = cur->next;
 	}
