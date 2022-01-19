@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malloc.c                                        :+:      :+:    :+:   */
+/*   ft_string.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/09 20:34:39 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/13 22:06:11 by hanelee          ###   ########.fr       */
+/*   Created: 2022/01/17 16:05:35 by cjeon             #+#    #+#             */
+/*   Updated: 2022/01/17 16:07:56 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "ft_types.h"
 
-void	*ft_malloc(size_t size)
+t_bool streq(const char *s1, const char *s2)
 {
-	void	*ret;
-
-	ret = malloc(size);
-	if (ret == NULL)
-		ft_perror_texit("minishell", 1);
-	return (ret);
+	while(*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			break ;
+		s1++;
+		s2++;
+	}
+	return (*s1 == *s2);
 }

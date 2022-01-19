@@ -3,28 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 23:28:47 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/13 22:04:54 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/17 16:07:50 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
 
-# include <unistd.h>
-# include <string.h>
-# include <errno.h>
-# include "libft.h"
+# include "ft_types.h"
 
-# define BUF_SIZE	128
-
-void	*ft_malloc(size_t size);
-
-void	ft_perror(const char *prefix);
-void	ft_perror_texit(const char *prefix, int status);
-void	ft_perror_custom(const char *prefix, const char *str);
-void	ft_perror_custom_texit(const char *prefix, const char *str, int status);
+t_bool streq(const char *s1, const char *s2);
 
 #endif
