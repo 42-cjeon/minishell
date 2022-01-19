@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 05:24:29 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/16 19:16:59 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/17 16:08:19 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,7 @@
 #include "lex.h"
 #include "libft.h"
 #include "tokenize.h"
-
-t_bool streq(const char *s1, const char *s2)
-{
-	while(*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			break;
-		s1++;
-		s2++;
-	}
-	return (*s1 == *s2);
-}
+#include "utils.h"
 
 int select_next_lexer(t_token_node *node)
 {
