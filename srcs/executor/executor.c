@@ -6,21 +6,23 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/19 16:38:01 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 07:14:02 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include <stdio.h>
 
-#include "utils.h"
-#include "parser.h"
+#include <fcntl.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
 #include "executor.h"
 #include "libft.h"
+#include "parser.h"
+#include "utils.h"
 
 extern char **environ;
-int g_last_exit_status;
 
 int handle_redirect(t_redir *redir)
 {
@@ -30,18 +32,20 @@ int handle_redirect(t_redir *redir)
 	{
 		if (redir->type == REDIR_IN)
 		{
-			target_fd = open(redir->target, O_RDONLY);
+	
+			target_fd = open(redir->target, O_RDWR);
 			dup2(target_fd, STDIN_FILENO);
 			close(target_fd);
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			target_fd = open(redir->target, O_WRONLY | O_CREAT);
-			dup2(target_fd, STDIN_FILENO);
+			target_fd = open(redir->target, O_WRONLY | O_CREAT, 0655);
+			dup2(target_fd, STDOUT_FILENO);
 			close(target_fd);
 		}
 		redir = redir->next;
 	}
+	return (0);
 }
 
 int restore_default_fd(t_shell_info *si)
@@ -94,6 +98,7 @@ int execute_builtin(char **cmd, t_builtin_types type)
 	if (type == BUILTIN_ENV)
 	if (type == BUILTIN_EXIT)
 	*/
+	return (0);
 }
 
 int execute_subshell(char *cmd)
@@ -108,7 +113,20 @@ int execute_simple_cmd(char **cmd)
 	return (execve(cmd[0], cmd, environ));
 }
 
-void fork_execute_command(t_command *command, pid_t *child)
+int close_pipes(t_pipes *pipes)
+{
+	if (pipes->curr_pipe[0] != -1)
+		close(pipes->curr_pipe[0]);
+	if (pipes->curr_pipe[1] != -1)
+		close(pipes->curr_pipe[1]);
+	if (pipes->prev_pipe[0] != -1)
+		close(pipes->prev_pipe[0]);
+	if (pipes->prev_pipe[1] != -1)
+		close(pipes->prev_pipe[1]);
+	return (0);
+}
+
+void fork_execute_command(t_pipes *pipes, t_command *command, pid_t *child)
 {
 	t_builtin_types	type;
 	pid_t	pid;
@@ -119,7 +137,7 @@ void fork_execute_command(t_command *command, pid_t *child)
 		exit(128);
 	else if (pid == 0)
 	{
-		
+		close_pipes(pipes);
 		type = is_builtin(command);
 		if (type)
 			exit(execute_builtin(command->data.c, type)); 
@@ -152,7 +170,7 @@ void move_next_pipe(t_pipes *pipes, int islast)
 	if (pipes->prev_pipe[0] != -1)
 		close(pipes->prev_pipe[0]);
 	if (pipes->prev_pipe[1] != -1)
-		close(pipes->prev_pipe[0]);
+		close(pipes->prev_pipe[1]);
 	pipes->prev_pipe[0] = pipes->curr_pipe[0];
 	pipes->prev_pipe[1] = pipes->curr_pipe[1];
 	if (!islast)
@@ -164,11 +182,25 @@ void move_next_pipe(t_pipes *pipes, int islast)
 	}
 }
 
-void replace_stdio_fd(t_pipes *pipes)
+void replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 {
-	if (pipes->prev_pipe[0] != -1)
+	int fd;
+
+	if (pipes->prev_pipe[0] == -1)
+	{
+		fd = open(si->default_stdin, O_RDWR);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	else
 		dup2(pipes->prev_pipe[0], STDIN_FILENO);
-	if (pipes->curr_pipe[1] != -1)
+	if (pipes->curr_pipe[0] == -1)
+	{
+		fd = open(si->default_stdout, O_RDWR);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	else
 		dup2(pipes->curr_pipe[1], STDOUT_FILENO);
 }
 
@@ -188,20 +220,19 @@ int wait_childs(t_pipeline *pipeline)
 
 int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 {
-	int		result;
 	t_pipes	pipes;
 	size_t	i;
 
 	pipes_init(&pipes);
 	move_next_pipe(&pipes, FALSE);
-	replace_stdio_fd(&pipes);
-	fork_execute_command(&pipeline->commands[0], &pipeline->childs[0]);
+	replace_stdio_fd(si, &pipes);
+	fork_execute_command(&pipes, &pipeline->commands[0], &pipeline->childs[0]);
 	i = 1;
 	while (i < pipeline->len)
 	{
 		move_next_pipe(&pipes, i + 1 == pipeline->len);
-		replace_stdio_fd(&pipes);
-		fork_execute_command(&pipeline->commands[i], &pipeline->childs[i]);
+		replace_stdio_fd(si, &pipes);
+		fork_execute_command(&pipes, &pipeline->commands[i], &pipeline->childs[i]);
 		i++;
 	}
 	close(pipes.prev_pipe[0]);
@@ -210,7 +241,7 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	return (wait_childs(pipeline));
 }
 
-int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
+int execute_single_cmd(t_pipeline *pipeline)
 {
 	t_builtin_types	type;
 	int				status;
@@ -218,9 +249,9 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 	handle_redirect(pipeline->commands->redir);
 	type = is_builtin(pipeline->commands);
 	if (type)
-		return (execute_builtin(pipeline->commands, type));
+		return (execute_builtin(pipeline->commands->data.c, type));
 	else if (pipeline->commands->type == C_SUBSHELL)
-		return (execute_subshell(pipeline->commands));
+		return (execute_subshell(pipeline->commands->data.s));
 	pipeline->childs[0] = fork();
 	if (pipeline->childs[0] == -1)
 		return (/*FORK_ERROR*/1);
@@ -233,24 +264,28 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 	}
 }
 
-int execute_line(t_shell_info *si, t_command_node *node)
+void execute_line(t_shell_info *si, t_command_node *node)
 {
 	while (node)
 	{
 		if (node->type == C_PIPELINE)
 		{
 			if (node->pipeline->len == 1)
-				g_last_exit_status = execute_single_cmd(si, node->pipeline);
+				si->last_status = execute_single_cmd(node->pipeline);
 			else
-				g_last_exit_status = execute_pipeline(si, node->pipeline);
+				si->last_status = execute_pipeline(si, node->pipeline);
 			restore_default_fd(si);
 		}
 		else if (node->type == C_OR)
-			if (!g_last_exit_status)
+		{
+			if (!si->last_status)
 				node = node->next;
+		}
 		else if (node->type == C_AND)
-			if (g_last_exit_status)
+		{
+			if (si->last_status)
 				node = node->next;
+		}
 		node = node->next;
 	}
 }
