@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/17 15:51:28 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 10:39:53 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PARSER_H
 
 #include <unistd.h>
-#include "tokenize.h"
+#include "tokenizer.h"
 
 typedef enum e_parser_result
 {
@@ -95,8 +95,25 @@ typedef struct s_parser_context
 
 }	t_parser_context;
 
-int parse_pipeline(t_parser_context *context);
-int next_pipeline(t_parser_context *context);
-int parse_logical_oper(t_parser_context *context);
-int parse(t_tokenv *tokenv, t_line_info *li);
+int				lex(t_tokenv *tokenv);
+int				parse_command(t_parser_context *context, t_command *cmd);
+int				validate_command(t_token_node *curr, t_command *cmd);
+t_command_node	*get_cmd_node(t_command_node_type type, t_pipeline *pipeline);
+void			push_line_info(t_line_info *li, t_command_node *node);
+int				clear_pipeline(t_parser_context *context);
+void			push_redir(t_redir **head, t_redir *new);
+void			clear_redir(t_redir **head);
+int				check_cmd_type(t_command *cmd, int curr_type);
+int				next_logical_oper(t_parser_context *context);
+int				parse_logical_oper(t_parser_context *context);
+int				parse_pipeline(t_parser_context *context);
+int				next_pipeline(t_parser_context *context);
+int				parse_pipe(t_parser_context *context, int is_last);
+t_pipeline		*get_pipeline(t_token_node *node);
+int				parse_redir_in_target(t_token_node *curr, t_redir *redir);
+int				parse_redir(t_token_node *curr, t_command *cmd);
+t_redir			*get_redir(void);
+int				parse(t_tokenv *tokenv, t_line_info *li);
+t_command_node	*parse_line(char *line);
+
 #endif

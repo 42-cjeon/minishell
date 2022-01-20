@@ -6,22 +6,22 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:46:47 by cjeon             #+#    #+#             */
-/*   Updated: 2021/12/25 15:20:33 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 09:55:01 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
 #include <stdlib.h>
-#include "libft.h"
-#include "tokenize.h"
-#include "tk_types.h"
 
-t_bool	context_peek_cmp(t_tokenizer_context *context, \
-							t_tk_typecmp tk_typecmp)
+#include "tk_types.h"
+#include "tokenizer.h"
+
+t_bool	context_peek_cmp(t_tokenizer_context *context, t_typecmp tk_typecmp)
 {
 	return (tk_typecmp(context->raw_line[context->cursor]));
 }
 
-size_t	seek_first_nq(t_tokenizer_context *context, t_tk_typecmp tk_typecmp)
+size_t	seek_first_nq(t_tokenizer_context *context, t_typecmp tk_typecmp)
 {
 	size_t	i;
 
@@ -35,7 +35,7 @@ size_t	seek_first_nq(t_tokenizer_context *context, t_tk_typecmp tk_typecmp)
 	return (i);
 }
 
-size_t	seek_first_eq(t_tokenizer_context *context, t_tk_typecmp tk_typecmp)
+size_t	seek_first_eq(t_tokenizer_context *context, t_typecmp tk_typecmp)
 {
 	size_t	i;
 

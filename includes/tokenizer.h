@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.h                                         :+:      :+:    :+:   */
+/*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:40:09 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/05 05:39:38 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 09:20:05 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,27 @@ typedef struct s_tokenizer_context
 	size_t		cursor;
 }	t_tokenizer_context;
 
-t_bool	context_peek_cmp(t_tokenizer_context *context, \
-							t_tk_typecmp tk_typecmp);
-size_t	seek_first_nq(t_tokenizer_context *context, t_tk_typecmp tk_typecmp);
-size_t	seek_first_eq(t_tokenizer_context *context, t_tk_typecmp tk_typecmp);
-size_t	seek_first_nq_op(t_tokenizer_context *context);
-
-void	tokenv_push(t_tokenv *tokenv, t_token_node *new);
-int		tokenv_assign_push(t_tokenv *tokenv, char *token, t_token_type type);
-t_token_node *token_node_new(char *token, t_token_type type);
-void	tokenv_init(t_tokenv *tokenv);
-void	tokenv_clear(t_tokenv *tokenv);
-
-t_tokenizer_result	tokenize_wildcard(t_tokenizer_context *context);
-t_tokenizer_result	select_next_tokenizer(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_unescaped(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_quote(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_dquote(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_space(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_subshell(t_tokenizer_context *context);
-t_tokenizer_result	tokenize_operator(t_tokenizer_context *context); 
-t_tokenizer_result	tokenize(const char *raw_line, t_tokenv *tokenv);
+void			tokenv_push(t_tokenv *tokenv, t_token_node *new);
+void			tokenv_assign_push(t_tokenv *tokenv, char *token, \
+					t_token_type type);
+t_token_node	*token_node_new(char *token, t_token_type type);
+void			tokenv_init(t_tokenv *tokenv);
+void			tokenv_clear(t_tokenv *tokenv);
+t_bool			context_peek_cmp(t_tokenizer_context *context, \
+					t_typecmp tk_typecmp);
+size_t			seek_first_nq(t_tokenizer_context *context, \
+					t_typecmp tk_typecmp);
+size_t			seek_first_eq(t_tokenizer_context *context, \
+					t_typecmp tk_typecmp);
+size_t			seek_first_nq_op(t_tokenizer_context *context);
+int				tokenize_unescaped(t_tokenizer_context *context);
+int				tokenize_space(t_tokenizer_context *context);
+int				tokenize_subshell(t_tokenizer_context *context);
+int				tokenize_operator(t_tokenizer_context *context);
+int				tokenize_wildcard(t_tokenizer_context *context);
+int				tokenize_quote(t_tokenizer_context *context);
+int				tokenize_dquote(t_tokenizer_context *context);
+int				select_next_tokenizer(t_tokenizer_context *context);
+int				tokenize(const char *raw_line, t_tokenv *tokenv);
 
 #endif

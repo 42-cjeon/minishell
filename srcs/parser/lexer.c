@@ -6,15 +6,14 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 05:24:29 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/17 16:08:19 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/20 10:49:33 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-#include "lex.h"
 #include "libft.h"
-#include "tokenize.h"
+#include "tokenizer.h"
 #include "utils.h"
 
 int select_next_lexer(t_token_node *node)
@@ -36,22 +35,23 @@ int select_next_lexer(t_token_node *node)
 		else if (streq(node->token, "&&"))
 			node->type = TK_AND;
 		else
-			return (LEX_EUNKNOWN_OPER);
+		{
+			ft_perror_custom("minishell: unknown operator", node->token);
+			return (1);
+		}
 	}
-	return (LEX_SUCCESS);
+	return (0);
 }
 
 int lex(t_tokenv *tokenv)
 {
 	t_token_node	*node;
-	int result;
 
 	node = tokenv->head;
 	while (node)
 	{
-		result = select_next_lexer(node);
-		if (result != LEX_SUCCESS)
-			return (result);
+		if (select_next_lexer(node))
+			return (1);
 		node = node->next;
 	}
 	return (0);

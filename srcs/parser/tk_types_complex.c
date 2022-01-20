@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lex.h                                              :+:      :+:    :+:   */
+/*   tk_types_complex.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/05 05:29:55 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/07 05:23:55 by cjeon            ###   ########.fr       */
+/*   Created: 2022/01/20 08:11:09 by cjeon             #+#    #+#             */
+/*   Updated: 2022/01/20 09:54:15 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEX_H
-# define LEX_H
+#include "tk_types.h"
+#include "tokenizer.h"
 
-#include "tokenize.h"
-
-enum e_lexer_result
+t_bool	tk_isstringtype(int type)
 {
-	LEX_SUCCESS,
-	LEX_EUNKNOWN_OPER
-};
+	return (type == TK_QUOTED_STRING \
+			|| type == TK_DQUOTED_STRING \
+			|| type == TK_UNESCAPED_STRING);
+}
 
-int lex(t_tokenv *tokenv);
+t_bool tk_isredir(int type)
+{
+	return (type == TK_HEREDOC || type == TK_REDIR_INPUT
+		|| type == TK_REDIR_OUTPUT || type == TK_APPEND);
+}
 
-#endif
+t_bool tk_islogicaloper(int type)
+{
+	return (type == TK_AND || type == TK_OR);
+}
