@@ -16,7 +16,8 @@ PARSER_SRCS := exp_types.c expand_filename.c expander.c expander_helper.c \
 			parser_pipeline.c parser_redir.c tk_types_complex.c \
 			tk_types_escape.c tk_types_operator.c token_container.c \
 			tokenizer.c tokenizer_helper.c tokenizer_normal.c tokenizer_pair.c \
-			whildcard_container.c wildcard.c wildcard_helper.c
+			whildcard_container.c wildcard.c wildcard_helper.c parser_clear.c \
+			parser_cmd_clear.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
 
 EXECUTOR_SRCS := executor.c
@@ -61,7 +62,7 @@ $(LIBFT) :
 	@$(MAKE) -C $(LIBFT_ROOT) INCLUDE_ROOT=$(realpath $(INCLUDE_ROOT)) all
 
 $(LIBRL) :
-	@$(MAKE) -C $(LIBRL_ROOT) install-static
+	@$(MAKE) -C $(LIBRL_ROOT) all
 
 # -- 나중에 지우기 -- #
 test : $(TOBJS) $(LIBFT)
