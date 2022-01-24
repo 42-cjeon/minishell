@@ -6,12 +6,11 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 07:14:02 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/24 11:54:39 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
+#include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -22,8 +21,6 @@
 #include "parser.h"
 #include "utils.h"
 
-extern char **environ;
-
 int handle_redirect(t_redir *redir)
 {
 	int target_fd;
@@ -32,14 +29,19 @@ int handle_redirect(t_redir *redir)
 	{
 		if (redir->type == REDIR_IN)
 		{
-	
-			target_fd = open(redir->target, O_RDWR);
+			target_fd = open(redir->target, O_RDONLY);
 			dup2(target_fd, STDIN_FILENO);
 			close(target_fd);
 		}
 		else if (redir->type == REDIR_OUT)
 		{
-			target_fd = open(redir->target, O_WRONLY | O_CREAT, 0655);
+			target_fd = open(redir->target, O_WRONLY | O_CREAT, 0644);
+			dup2(target_fd, STDOUT_FILENO);
+			close(target_fd);
+		}
+		else if (redir->type == REDIR_APPEND)
+		{
+			target_fd = open(redir->target, O_WRONLY | O_APPEND, 0644);
 			dup2(target_fd, STDOUT_FILENO);
 			close(target_fd);
 		}
@@ -110,7 +112,7 @@ int execute_subshell(char *cmd)
 
 int execute_simple_cmd(char **cmd)
 {
-	return (execve(cmd[0], cmd, environ));
+	return (execve(cmd[0], cmd, NULL));
 }
 
 int close_pipes(t_pipes *pipes)
@@ -134,7 +136,7 @@ void fork_execute_command(t_pipes *pipes, t_command *command, pid_t *child)
 	handle_redirect(command->redir);
 	pid = fork();
 	if (pid == -1)
-		exit(128);
+		ft_perror_texit("minishell", errno);
 	else if (pid == 0)
 	{
 		close_pipes(pipes);
@@ -215,6 +217,8 @@ int wait_childs(t_pipeline *pipeline)
 		waitpid(pipeline->childs[i], &status, 0);
 		i++;
 	}
+	if (!(status & 0177))
+		return ((status >> 8) & 0x000000ff);
 	return (status);
 }
 
@@ -237,7 +241,6 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	}
 	close(pipes.prev_pipe[0]);
 	close(pipes.prev_pipe[1]);
-	
 	return (wait_childs(pipeline));
 }
 
@@ -254,7 +257,7 @@ int execute_single_cmd(t_pipeline *pipeline)
 		return (execute_subshell(pipeline->commands->data.s));
 	pipeline->childs[0] = fork();
 	if (pipeline->childs[0] == -1)
-		return (/*FORK_ERROR*/1);
+		ft_perror_texit("minishell", errno);
 	else if (pipeline->childs[0] == 0)
 		exit(execute_simple_cmd(pipeline->commands->data.c));
 	else
