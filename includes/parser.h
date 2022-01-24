@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:39:53 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/24 23:21:58 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,11 @@ int				parse_redir(t_token_node *curr, t_command *cmd);
 t_redir			*get_redir(void);
 int				parse(t_tokenv *tokenv, t_line_info *li);
 t_command_node	*parse_line(char *line);
+void			line_info_clear(t_line_info *li);
+void			command_node_clear(t_command_node *node);
+void			pipeline_clear(t_pipeline *pipeline);
+void			command_clear(t_command *commands, size_t len);
+void			data_clear(t_cmd_data data, int type);
+void			redir_clear(t_redir *redir);
 
 #endif
