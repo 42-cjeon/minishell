@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/20 10:56:28 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/23 11:33:04 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,12 @@ int process_line(char *line)
 	tokenv_init(&tokenv);
 	if (tokenize(line, &tokenv) || expand(&tokenv) || lex(&tokenv))
 	{
-		printf("Tokenize FAIL\n");
 		tokenv_clear(&tokenv);
 		si.last_status = 1;
 		return (1);
 	}
 	ft_memset(&li, 0, sizeof(t_line_info));
-	print_tokens(&tokenv);
+	//print_tokens(&tokenv);
 	if (parse(&tokenv, &li))
 	{
 		printf("Parse FAIL\n");
@@ -148,6 +147,7 @@ int process_line(char *line)
 	//print_li(&li);
 	execute_line(&si, li.head);
 	tokenv_clear(&tokenv);
+	line_info_clear(&li);
 	return (0);
 }
 
