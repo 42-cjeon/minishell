@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_close.c                                         :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/25 10:24:36 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/25 12:34:51 by hanelee          ###   ########.fr       */
+/*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
+/*   Updated: 2022/01/25 04:50:09 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
+#include "builtin.h"
 
-int ft_close(int fildes)
+int	ft_export(const char *const *cmd)
 {
-	int result;
-
-	result = close(fildes);
-	if (result)
-		ft_perror_texit(PROJECT_NAME, 1);
-	return (result);
+	
 }

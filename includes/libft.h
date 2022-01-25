@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/25 10:32:50 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/25 12:28:40 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <stddef.h>
 # include "llist.h"
+# include "bstree.h"
 
 typedef struct s_list
 {

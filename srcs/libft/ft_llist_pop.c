@@ -6,12 +6,11 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:28:03 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/19 16:49:01 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 12:35:28 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 t_llnode	*ft_llist_pop_front(t_llist *lst)
 {
@@ -65,22 +64,5 @@ t_llnode	*ft_llist_pop(t_llist *lst, void *content)
 		ft_llnode_trim(node);
 		--(lst->size);
 	}
-	lst->content_delete(content);
 	return (node);
-}
-
-t_llnode	*ft_llist_search(t_llist *lst, const void *content)
-{
-	t_llnode	*cur;
-
-	if (lst == NULL)
-		return (NULL);
-	cur = lst->first;
-	while (cur != NULL)
-	{
-		if (!(lst->content_compare(cur->content, content)))
-			break ;
-		cur = cur->next;
-	}
-	return (cur);
 }

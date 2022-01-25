@@ -6,17 +6,17 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:22:03 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/17 17:46:54 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 12:26:28 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "readline/readline.h"
-# include "readline/history.h"
-# include "libft.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "readline/readline.h"
+#include "readline/history.h"
+#include "libft.h"
 
 static void	handler(int signum)
 {
@@ -54,8 +54,6 @@ char	*shell_readline(void)
 	char	*ret;
 
 	ret = readline("minishell$ ");
-	if (!ret)
-		exit(127);
 	return (ret);
 }
 

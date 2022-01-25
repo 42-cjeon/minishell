@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 16:03:41 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/19 16:50:01 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 12:21:12 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ t_llist			*ft_llist_create(void (*content_delete)(void*),
 void			ft_llist_delete(t_llist *lst);
 void			ft_llist_print(const t_llist *lst);
 
+void			ft_llist_push(t_llist *lst, t_llnode *node);
 void			ft_llist_push_front(t_llist *lst, t_llnode *node);
 void			ft_llist_push_back(t_llist *lst, t_llnode *node);
 t_llnode		*ft_llist_pop(t_llist *lst, void *content);
 t_llnode		*ft_llist_pop_front(t_llist *lst);
 t_llnode		*ft_llist_pop_back(t_llist *lst);
-t_llnode		*ft_llist_search(t_llist *lst, const void *content);
+t_llnode		*ft_llist_search(t_llist *lst, void *content);
 
 #endif
