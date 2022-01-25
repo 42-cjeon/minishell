@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/23 11:33:04 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/25 13:30:28 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "shell.h"
 #include "tokenizer.h"
 #include "executor.h"
+#include "envs.h"
 
 void print_redir(t_command *cmd)
 {
@@ -151,13 +152,14 @@ int process_line(char *line)
 	return (0);
 }
 
-int main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[], const char *envp[])
 {
 	char	*line;
+	t_envs	*envs;
 
 	argc = 0;
 	argv = NULL;
-	envp = NULL;
+	envs = envs_create(envp);
 	shell_init();
 	shell_print_banner();
 	while (1)
@@ -167,5 +169,6 @@ int main(int argc, char *argv[], char *envp[])
 		process_line(line);
 		free(line);
 	}
+	envs_delete(envs);
 	return (0);
 }

@@ -6,6 +6,7 @@ SRCS_ROOT = srcs
 PARSER_ROOT = $(SRCS_ROOT)/parser
 UTILS_ROOT = $(SRCS_ROOT)/utils
 SHELL_ROOT = $(SRCS_ROOT)/shell
+ENVS_ROOT = $(SRCS_ROOT)/envs
 EXECUTOR_ROOT = $(SRCS_ROOT)/executor
 
 INCLUDE_ROOT = includes
@@ -29,10 +30,13 @@ UTILS_SRCS := $(addprefix $(UTILS_ROOT)/, $(UTILS_SRCS))
 SHELL_SRCS := shell.c
 SHELL_SRCS := $(addprefix $(SHELL_ROOT)/, $(SHELL_SRCS))
 
+ENVS_SRCS := cenv.c envs.c envs_func.c
+ENVS_SRCS := $(addprefix $(ENVS_ROOT)/, $(ENVS_SRCS))
+
 MAIN_SRCS := minishell.c
 MAIN_SRCS := $(addprefix $(SRCS_ROOT)/, $(MAIN_SRCS))
 
-SRCS = $(PARSER_SRCS) $(MAIN_SRCS) $(SHELL_SRCS) $(UTILS_SRCS) $(EXECUTOR_SRCS)
+SRCS = $(PARSER_SRCS) $(MAIN_SRCS) $(SHELL_SRCS) $(UTILS_SRCS) $(EXECUTOR_SRCS) $(ENVS_SRCS)
 OBJS = $(SRCS:.c=.o)
 
 # -- 나중에 지우기 -- #
