@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 08:17:58 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 08:22:16 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static char	*stmt_create(const char *str)
-{
-	char	*ret;
-	char	*tmp;
+// static char	*stmt_create(const char *str)
+// {
+// 	char	*ret;
+// 	char	*tmp;
 
-	tmp = ft_strjoin("export: `", str);
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
-	ret = ft_strjoin(tmp, "\': not a valid identifier");
-	free(tmp);
-	return (ret);
-}
+// 	tmp = ft_strjoin("export: `", str);
+// 	if (!tmp)
+// 		ft_perror_texit(PROJECT_NAME, 1);
+// 	ret = ft_strjoin(tmp, "\': not a valid identifier");
+// 	free(tmp);
+// 	return (ret);
+// }
 
 static int	is_error(char **str)
 {
 	int	i;
 
 	i = 0;
+	str = NULL;
 	// 1. 첫 번째 argument를 체크하여 정상적인 numeric input인지 확인.
 		// minishell: exit: aaa: numeric argument required
 		// return (255)
