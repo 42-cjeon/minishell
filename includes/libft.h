@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/19 14:08:56 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 10:32:50 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
+# define PROJECT_NAME "minishell"
 
 # include <stddef.h>
 # include "llist.h"
@@ -72,5 +74,8 @@ void	ft_perror_custom(const char *prefix, const char *str);
 void	ft_perror_custom_texit(const char *prefix,
 			const char *str, int status);
 void	*ft_malloc(size_t size);
+int		ft_close(int fildes);
+int		ft_dup2(int fildes, int fildes2);
+int		ft_pipe(int fildes[2]);
 
 #endif
