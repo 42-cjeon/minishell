@@ -6,14 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 12:51:45 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 13:12:13 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:04:17 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cenv.h"
 #include "libft.h"
 #include <stdlib.h>
-#include <unistd.h>
 
 static char	*key_create(const char *str, const char *eq_pos)
 {
@@ -56,19 +55,6 @@ void	cenv_delete(t_cenv *cenv)
 		if (cenv->value)
 			free(cenv->value);
 		free(cenv);
-	}
-}
-
-void	cenv_print(t_cenv *cenv)
-{
-	if (cenv)
-	{
-		if (cenv->key)
-			write(STDOUT_FILENO, cenv->key, ft_strlen(cenv->key));
-		write(STDOUT_FILENO, "=", 1);
-		if (cenv->value)
-			write(STDOUT_FILENO, cenv->value, ft_strlen(cenv->value));
-		write(STDOUT_FILENO, "\n", 1);
 	}
 }
 

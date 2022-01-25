@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 12:40:17 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 13:20:33 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/25 22:56:53 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_envs	*envs_create(const char *envp[])
 			(void (*)(const void *))cenv_print);
 	ret->bst = ft_bstree_create((void (*)(void *))cenv_delete,
 			(int (*)(const void *, const void *))cenv_compare,
-			(void (*)(void *))cenv_print);
+			(void (*)(void *))cenv_print_export);
 	i = 0;
 	while (envp[i] != NULL)
 	{
