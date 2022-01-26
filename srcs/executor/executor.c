@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 12:14:40 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 12:53:14 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+#include <stdio.h>
 
 #include "executor.h"
 #include "libft.h"
@@ -99,13 +101,13 @@ void restore_default_fd(t_shell_info *si)
 	int fd[3];
 
 	fd[STDIN_FILENO] = open(si->default_stdin, O_RDONLY);
-	if (fd == -1)	
+	if (fd[STDIN_FILENO] == -1)
 		ft_perror_texit(PROJECT_NAME, 1);
 	fd[STDOUT_FILENO] = open(si->default_stdout, O_WRONLY);
-	if (fd == -1)	
+	if (fd[STDOUT_FILENO] == -1)	
 		ft_perror_texit(PROJECT_NAME, 1);
 	fd[STDERR_FILENO] = open(si->default_stderr, O_WRONLY);
-	if (fd == -1)	
+	if (fd[STDERR_FILENO] == -1)	
 		ft_perror_texit(PROJECT_NAME, 1);
 	ft_dup2(fd[STDIN_FILENO], STDIN_FILENO);
 	ft_dup2(fd[STDOUT_FILENO], STDOUT_FILENO);
@@ -151,7 +153,7 @@ int execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
 	else if (type == BUILTIN_ENV)
 		return (ft_env(cmd, si->envs));
 	else if (type == BUILTIN_EXIT)
-		return (ft_exit(si->envs));
+		return (ft_exit(cmd));
 	else
 		return (1);
 }
@@ -165,11 +167,16 @@ int execute_subshell(char *cmd)
 
 int execute_simple_cmd(t_shell_info *si, char **cmd)
 {
+	char **envs_arr;
+	char **path;
+
+	envs_arr = envs_to_arr(si->envs);
 	if (ft_strchr(cmd[0], '/'))
 	{
 		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
 			ft_perror_texit(PROJECT_NAME, 1);
 	}
+ 	
 	return (1);
 }
 
