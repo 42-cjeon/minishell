@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:18:15 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:49:11 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 # define PARSER_H
 
 # include <unistd.h>
-# include "tokenizer.h"
+
 # include "shell.h"
+# include "tokenizer.h"
 
 typedef enum e_parser_result
 {
