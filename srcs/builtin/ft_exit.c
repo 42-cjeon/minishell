@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 10:31:59 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 13:41:26 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,20 @@ static char	*nonnumeric_stmt_create(const char *str)
 	return (ret);
 }
 
-static int	is_nonnumeric_error(char *str)
+static int	is_nonnumeric_error(const char *str)
 {
 	int	i;
 
 	i = 1;
-	if (str[0] != '+'
-		|| str[0] != '-' || !ft_isdigit(str[0]))
+	if (!str)
+		return (0);
+	if (str[0] != '+' && str[0] != '-' && !ft_isdigit(str[0]))
 		return (1);
 	while (str[i] != '\0')
 	{
 		if (!ft_isdigit(str[i]))
 			return (1);
+		++i;
 	}
 	return (0);
 }
@@ -61,25 +63,22 @@ int	ft_exit(char **cmd)
 	int		status;
 	char	*stmt;
 
+	status = 0;
 	if (!cmd || !(*cmd))
 		return (1);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (is_nonnumeric_error(cmd[1]))
 	{
 		stmt = nonnumeric_stmt_create(cmd[1]);
-		// 이 에러는 bash가 종료됨.
 		ft_perror_custom_texit(PROJECT_NAME, stmt, 1);
 	}
 	else if (is_argnum_error(cmd))
 	{
 		ft_perror_custom(PROJECT_NAME, "exit: too many arguments");
-		// 이 에러는 bash가 종료되지 않음.
 		return (1);
 	}
 	if (cmd[1])
-	{
 		status = ft_atoi(cmd[1]);
-		ft_putendl_fd("exit", STDOUT_FILENO);
-		exit(status);
-	}
+	exit(status);
 	return (0);
 }

@@ -6,14 +6,12 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:19 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:09:05 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 13:22:09 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "errno.h"
-
-// static int	is_argnum_error(const char *str)
 
 int	ft_env(char **cmd, const t_envs *envs)
 {
@@ -30,7 +28,6 @@ int	ft_env(char **cmd, const t_envs *envs)
 		ft_perror(prefix);
 		return (127);
 	}
-	else
-		envs_print(envs, PORDER_UNSORTED);
+	envs_print(envs, PORDER_UNSORTED);
 	return (0);
 }
