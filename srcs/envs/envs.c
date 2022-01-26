@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 12:40:17 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 22:56:53 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 12:37:07 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,18 @@ void	envs_delete(t_envs *envs)
 		ft_bstree_delete(envs->bst);
 		free(envs);
 	}
+}
+
+void	envs_arr_delete(char **envs_arr)
+{
+	size_t	i;
+
+	if (!envs_arr)
+		return ;
+	i = 0;
+	while (envs_arr[i])
+		free(envs_arr[i++]);
+	free(envs_arr);
 }
 
 void	envs_print(const t_envs *envs, t_print_order porder)
