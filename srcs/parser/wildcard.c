@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:49:52 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:51:53 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:40:49 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include "tokenizer.h"
 #include "utils.h"
 
-t_bool match_part(t_str_node *str_node, const char *filename, \
-		size_t filename_len, size_t left_char)
+t_bool	match_part(t_str_node *str_node, const char *filename, \
+			size_t filename_len, size_t left_char)
 {
 	if (left_char == 0 || str_node == NULL)
 		return (TRUE);
@@ -38,7 +38,7 @@ t_bool match_part(t_str_node *str_node, const char *filename, \
 	return (FALSE);
 }
 
-t_bool match_filename(t_wildcard_info *wcinfo, const char *filename)
+t_bool	match_filename(t_wildcard_info *wcinfo, const char *filename)
 {
 	size_t	filename_len;
 	size_t	first_len;
@@ -58,7 +58,7 @@ t_bool match_filename(t_wildcard_info *wcinfo, const char *filename)
 			filename_len - last_len, wcinfo->total_len));
 }
 
-int append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, \
+int	append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, \
 		t_tokenv *filenames)
 {
 	char			*token;
@@ -84,7 +84,7 @@ int append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, \
 	return (EXP_NOMATCH);
 }
 
-int append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
+int	append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 {
 	DIR	*ent;
 
@@ -104,7 +104,7 @@ int append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 	return (EXP_SUCCESS);
 }
 
-void append_nomatch(t_wildcard_info *wcinfo, t_tokenv *tokenv)
+void	append_nomatch(t_wildcard_info *wcinfo, t_tokenv *tokenv)
 {
 	char			*token;
 	t_token_node	*node;

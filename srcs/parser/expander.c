@@ -79,7 +79,7 @@ int	merge_string_tokens(t_expander_context *context)
 	return (EXP_STAY);
 }
 
-int del_space_node(t_expander_context *context)
+int	del_space_node(t_expander_context *context)
 {
 	if (context->curr->type != TK_SPACE)
 		return (EXP_CONTINUE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_pipeline.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:04:16 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:59:29 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:32:02 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "tk_types.h"
 #include "libft.h"
 
-int parse_pipeline(t_parser_context *context)
+int	parse_pipeline(t_parser_context *context)
 {
-	t_pipeline *pipeline;
-	size_t index;
-	int result;
+	t_pipeline	*pipeline;
+	size_t		index;
+	int			result;
 
 	pipeline = get_pipeline(context->curr);
 	index = 0;
@@ -38,7 +38,7 @@ int parse_pipeline(t_parser_context *context)
 	return (next_pipeline(context));
 }
 
-int next_pipeline(t_parser_context *context)
+int	next_pipeline(t_parser_context *context)
 {
 	if (context->curr == NULL)
 		return (P_SUCCESS);
@@ -47,7 +47,7 @@ int next_pipeline(t_parser_context *context)
 	return (P_ESYNTEX);
 }
 
-int parse_pipe(t_parser_context *context, int is_last)
+int	parse_pipe(t_parser_context *context, int is_last)
 {
 	if (is_last)
 	{
@@ -68,10 +68,10 @@ int parse_pipe(t_parser_context *context, int is_last)
 	}
 }
 
-t_pipeline *get_pipeline(t_token_node *node)
+t_pipeline	*get_pipeline(t_token_node *node)
 {
-	size_t	len;
-	t_pipeline *pipeline;
+	size_t		len;
+	t_pipeline	*pipeline;
 
 	len = 1;
 	while (node)

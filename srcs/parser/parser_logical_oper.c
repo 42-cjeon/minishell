@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_logical_oper.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:04:14 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:17:18 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:30:41 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 #include "tk_types.h"
 
-int next_logical_oper(t_parser_context *context)
+int	next_logical_oper(t_parser_context *context)
 {
 	t_token_type	type;
 
@@ -27,9 +27,9 @@ int next_logical_oper(t_parser_context *context)
 	return (P_ESYNTEX);
 }
 
-int parse_logical_oper(t_parser_context *context)
+int	parse_logical_oper(t_parser_context *context)
 {
-	t_command_node *node;
+	t_command_node	*node;
 
 	if (context->curr->type == TK_AND)
 		node = get_cmd_node(C_AND, NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_helper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:42:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 15:21:09 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:22:47 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "utils.h"
 #include "shell.h"
 
-t_bool exp_is_wildcard_start(t_token_node *curr, t_token_node *next)
+t_bool	exp_is_wildcard_start(t_token_node *curr, t_token_node *next)
 {
 	if (curr->type == TK_WILDCARD)
 		return (TRUE);
@@ -27,14 +27,15 @@ t_bool exp_is_wildcard_start(t_token_node *curr, t_token_node *next)
 	return (FALSE);
 }
 
-t_bool exp_iswildcard(t_token_node *node)
+t_bool	exp_iswildcard(t_token_node *node)
 {
 	if (node == NULL)
 		return (FALSE);
 	return (node->type == TK_STRING || node->type == TK_WILDCARD);
 }
 
-t_expander_result	for_each_node(t_shell_info *si, t_tokenv *tokenv, t_expander expander)
+t_expander_result	for_each_node(t_shell_info *si,
+		t_tokenv *tokenv, t_expander expander)
 {
 	t_expander_context	context;
 	t_expander_result	result;
@@ -62,7 +63,7 @@ t_expander_result	for_each_node(t_shell_info *si, t_tokenv *tokenv, t_expander e
 
 size_t	get_varname_len(char *str)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	if (*str == '?')

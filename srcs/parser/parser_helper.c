@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:07:38 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:37:54 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:30:11 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "tokenizer.h"
 
-int check_cmd_type(t_command *cmd, int curr_type)
+int	check_cmd_type(t_command *cmd, int curr_type)
 {
 	if (cmd->type == C_NONE)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_split.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 16:31:22 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:31:10 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:23:24 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	handle_string(char *token, t_tokenv *tokenv)
 
 int	handle_space(char *token, t_tokenv *tokenv)
 {
-	t_token_node *node;
+	t_token_node	*node;
 
 	while (tk_isspace(*token))
 		token++;
@@ -56,11 +56,11 @@ int	handle_empty(char *token, t_tokenv *tokenv)
 	return (EXP_SUCCESS);
 }
 
-t_tokenv *split_token(char *token)
+t_tokenv	*split_token(char *token)
 {
 	t_tokenv			*tokenv;
 	t_expander_result	result;
-	
+
 	tokenv = ft_malloc(sizeof(t_tokenv));
 	tokenv_init(tokenv);
 	if (*token == '\0')

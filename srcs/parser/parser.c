@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 14:39:35 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:33:40 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 #include "libft.h"
 #include "shell.h"
 
-int parse(t_tokenv *tokenv, t_line_info *li)
+int	parse(t_tokenv *tokenv, t_line_info *li)
 {
-	t_parser_context context;
+	t_parser_context	context;
 
 	context.li = li;
 	context.curr = tokenv->head;
 	return (parse_pipeline(&context));
 }
 
-t_command_node *parse_line(t_shell_info *si, char *line)
+t_command_node	*parse_line(t_shell_info *si, char *line)
 {
 	t_tokenv	tokenv;
 	t_line_info	li;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_container.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 21:10:49 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:16:30 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:36:55 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	tokenv_assign_push(t_tokenv *tokenv, char *token, t_token_type type)
 	tokenv_push(tokenv, node);
 }
 
-t_token_node *token_node_new(char *token, t_token_type type)
+t_token_node	*token_node_new(char *token, t_token_type type)
 {
-	t_token_node *node;
+	t_token_node	*node;
 
 	node = ft_malloc(sizeof(t_token_node));
 	node->type = type;
@@ -56,8 +56,8 @@ void	tokenv_init(t_tokenv *tokenv)
 
 void	tokenv_clear(t_tokenv *tokenv)
 {
-	t_token_node *curr;
-	t_token_node *next;
+	t_token_node	*curr;
+	t_token_node	*next;
 
 	curr = tokenv->head;
 	while (curr)

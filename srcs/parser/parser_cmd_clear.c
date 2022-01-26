@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_clear.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:06:18 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/23 11:06:44 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:27:23 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 #include "parser.h"
 
-void redir_clear(t_redir *redir)
+void	redir_clear(t_redir *redir)
 {
-	t_redir *curr;
-	t_redir *next;
+	t_redir	*curr;
+	t_redir	*next;
 
 	curr = redir;
 	while (curr)
@@ -29,9 +29,9 @@ void redir_clear(t_redir *redir)
 	}
 }
 
-void data_clear(t_cmd_data data, int type)
+void	data_clear(t_cmd_data data, int type)
 {
-	char **cmd_arr;
+	char	**cmd_arr;
 
 	if (type == C_SUBSHELL)
 		free(data.s);
@@ -44,9 +44,9 @@ void data_clear(t_cmd_data data, int type)
 	}
 }
 
-void command_clear(t_command *commands, size_t len)
+void	command_clear(t_command *commands, size_t len)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < len)

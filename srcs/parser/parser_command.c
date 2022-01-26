@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:06:07 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:50:38 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:28:34 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "parser.h"
 #include "utils.h"
 
-int parse_command(t_parser_context *context, t_command *cmd)
+int	parse_command(t_parser_context *context, t_command *cmd)
 {
 	size_t	i;
+
 	if (validate_command(context->curr, cmd) != P_SUCCESS)
 		return (P_ESYNTEX);
 	i = 0;
@@ -35,9 +36,9 @@ int parse_command(t_parser_context *context, t_command *cmd)
 	return (P_SUCCESS);
 }
 
-int validate_command(t_token_node *curr, t_command *cmd)
+int	validate_command(t_token_node *curr, t_command *cmd)
 {
-	size_t cmd_len;
+	size_t	cmd_len;
 
 	cmd_len = 0;
 	while (curr && (curr->type == TK_SUBSHELL || curr->type == TK_STRING \
@@ -63,9 +64,9 @@ int validate_command(t_token_node *curr, t_command *cmd)
 	return (P_SUCCESS);
 }
 
-t_command_node *get_cmd_node(t_command_node_type type, t_pipeline *pipeline)
+t_command_node	*get_cmd_node(t_command_node_type type, t_pipeline *pipeline)
 {
-	t_command_node *node;
+	t_command_node	*node;
 
 	node = ft_malloc(sizeof(t_command_node));
 	node->type = type;
@@ -73,4 +74,3 @@ t_command_node *get_cmd_node(t_command_node_type type, t_pipeline *pipeline)
 	node->next = NULL;
 	return (node);
 }
-

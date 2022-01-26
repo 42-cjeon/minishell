@@ -18,7 +18,7 @@ PARSER_SRCS := exp_types.c expand_filename.c expander.c expander_helper.c \
 			parser_pipeline.c parser_redir.c tk_types_complex.c \
 			tk_types_escape.c tk_types_operator.c token_container.c \
 			tokenizer.c tokenizer_helper.c tokenizer_normal.c tokenizer_pair.c \
-			whildcard_container.c wildcard.c wildcard_helper.c parser_clear.c \
+			wildcard_container.c wildcard.c wildcard_helper.c parser_clear.c \
 			parser_cmd_clear.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
 

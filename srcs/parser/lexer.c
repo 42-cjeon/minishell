@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 05:24:29 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:49:33 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:25:03 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "tokenizer.h"
 #include "utils.h"
 
-int select_next_lexer(t_token_node *node)
+int	select_next_lexer(t_token_node *node)
 {
 	if (node->type == TK_OPERATOR)
 	{
@@ -25,13 +25,13 @@ int select_next_lexer(t_token_node *node)
 		else if (streq(node->token, "<"))
 			node->type = TK_REDIR_INPUT;
 		else if (streq(node->token, ">>"))
-		 	node->type = TK_APPEND;
+			node->type = TK_APPEND;
 		else if (streq(node->token, "<<"))
-		 	node->type = TK_HEREDOC;
+			node->type = TK_HEREDOC;
 		else if (streq(node->token, "|"))
-		 	node->type = TK_PIPE;
+			node->type = TK_PIPE;
 		else if (streq(node->token, "||"))
-		 	node->type = TK_OR;
+			node->type = TK_OR;
 		else if (streq(node->token, "&&"))
 			node->type = TK_AND;
 		else
@@ -43,7 +43,7 @@ int select_next_lexer(t_token_node *node)
 	return (0);
 }
 
-int lex(t_tokenv *tokenv)
+int	lex(t_tokenv *tokenv)
 {
 	t_token_node	*node;
 

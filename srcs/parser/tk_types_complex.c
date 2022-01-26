@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tk_types_complex.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:11:09 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:54:15 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:34:12 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ t_bool	tk_isstringtype(int type)
 			|| type == TK_UNESCAPED_STRING);
 }
 
-t_bool tk_isredir(int type)
+t_bool	tk_isredir(int type)
 {
 	return (type == TK_HEREDOC || type == TK_REDIR_INPUT
 		|| type == TK_REDIR_OUTPUT || type == TK_APPEND);
 }
 
-t_bool tk_islogicaloper(int type)
+t_bool	tk_islogicaloper(int type)
 {
 	return (type == TK_AND || type == TK_OR);
 }
