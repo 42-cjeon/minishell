@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   envs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 12:40:17 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:37:07 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:06:36 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envs.h"
 #include <stdlib.h>
+
+#include "envs.h"
 
 t_envs	*envs_create(const char *envp[])
 {

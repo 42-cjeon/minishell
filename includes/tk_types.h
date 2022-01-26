@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tk_types.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:59:54 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:54:38 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:40:39 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef enum e_bool
 	TRUE = 1
 }	t_bool;
 
-typedef t_bool (*t_typecmp)(const char c);
+typedef t_bool	(*t_typecmp)(const char c);
 
 t_bool	tk_isspace(const char c);
 t_bool	tk_isquote(const char c);

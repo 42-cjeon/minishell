@@ -6,13 +6,14 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 12:51:45 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 14:04:17 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:05:54 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "cenv.h"
 #include "libft.h"
-#include <stdlib.h>
 
 static char	*key_create(const char *str, const char *eq_pos)
 {

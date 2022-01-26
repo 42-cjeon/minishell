@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 14:36:24 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:49:11 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include <unistd.h>
-#include "tokenizer.h"
-#include "shell.h"
+# include <unistd.h>
+
+# include "shell.h"
+# include "tokenizer.h"
 
 typedef enum e_parser_result
 {
@@ -54,7 +55,7 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-typedef int  t_pipe[2];
+typedef int	t_pipe[2];
 
 typedef union u_cmd_data
 {
@@ -85,15 +86,14 @@ typedef struct s_command_node
 
 typedef struct s_line_info
 {
-	t_command_node *head;
-	t_command_node *tail;
+	t_command_node	*head;
+	t_command_node	*tail;
 }	t_line_info;
 
 typedef struct s_parser_context
 {
-	t_token_node *curr;
-	t_line_info *li;
-
+	t_token_node	*curr;
+	t_line_info		*li;
 }	t_parser_context;
 
 int				lex(t_tokenv *tokenv);

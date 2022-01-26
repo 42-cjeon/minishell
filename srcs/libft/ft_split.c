@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 12:37:23 by cjeon             #+#    #+#             */
-/*   Updated: 2021/11/13 23:57:56 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:22:18 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	append_array(char **array, size_t index,
 {
 	char	*str;
 
-	str = (char *)malloc(sizeof(char) * (len + 1));
+	str = (char *)ft_malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
 	{
 		free_array(array, index);
@@ -84,7 +84,7 @@ static char	**get_empty_array(const char *str, char c)
 		}
 		str++;
 	}
-	array = (char **)malloc(sizeof(char *) * (arr_len + 1));
+	array = (char **)ft_malloc(sizeof(char *) * (arr_len + 1));
 	if (array == NULL)
 		return (NULL);
 	return (array);

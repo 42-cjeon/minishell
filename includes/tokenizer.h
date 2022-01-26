@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:40:09 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:20:05 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:42:56 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENIZE_H
-# define TOKENIZE_H
+#ifndef TOKENIZER_H
+# define TOKENIZER_H
 
 # include <stddef.h>
+
 # include "tk_types.h"
 
 typedef enum e_tokenizer_result
@@ -46,15 +47,15 @@ typedef enum e_token_type
 
 typedef struct s_token_node
 {
-	char *token;
-	t_token_type type;
-	struct s_token_node *next;
+	char				*token;
+	t_token_type		type;
+	struct s_token_node	*next;
 }	t_token_node;
 
 typedef struct s_tokenv
 {
-	t_token_node *head;
-	t_token_node *tail;
+	t_token_node	*head;
+	t_token_node	*tail;
 }	t_tokenv;
 
 typedef struct s_tokenizer_context

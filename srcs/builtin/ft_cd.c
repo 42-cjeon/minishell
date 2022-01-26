@@ -6,13 +6,14 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:13:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 13:09:49 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:26:29 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
 
 static char	*prefix_create(const char *str)
 {
@@ -20,11 +21,7 @@ static char	*prefix_create(const char *str)
 	char	*tmp;
 
 	tmp = ft_strjoin(PROJECT_NAME, ": cd: ");
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
 	ret = ft_strjoin(tmp, str);
-	if (!ret)
-		ft_perror_texit(PROJECT_NAME, 1);
 	return (ret);
 }
 

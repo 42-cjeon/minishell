@@ -6,13 +6,14 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 14:38:16 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:32:23 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "builtin.h"
 #include "envs.h"
-#include <stdlib.h>
 
 static char	*stmt_create(const char *str)
 {
@@ -20,8 +21,6 @@ static char	*stmt_create(const char *str)
 	char	*tmp;
 
 	tmp = ft_strjoin("export: `", str);
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
 	ret = ft_strjoin(tmp, "\': not a valid identifier");
 	free(tmp);
 	return (ret);

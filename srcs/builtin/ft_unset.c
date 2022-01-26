@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:12:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 14:38:08 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:28:35 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include <stdlib.h>
+
+#include "builtin.h"
 
 static char	*stmt_create(const char *str)
 {
@@ -19,8 +20,6 @@ static char	*stmt_create(const char *str)
 	char	*tmp;
 
 	tmp = ft_strjoin("unset: `", str);
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
 	ret = ft_strjoin(tmp, "\': not a valid identifier");
 	free(tmp);
 	return (ret);

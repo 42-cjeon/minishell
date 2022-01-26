@@ -28,7 +28,7 @@ EXECUTOR_SRCS := $(addprefix $(EXECUTOR_ROOT)/, $(EXECUTOR_SRCS))
 UTILS_SRCS := find_last_slash.c move_string.c replace_str.c streq.c
 UTILS_SRCS := $(addprefix $(UTILS_ROOT)/, $(UTILS_SRCS))
 
-SHELL_SRCS := shell.c
+SHELL_SRCS := shell.c shell_print.c
 SHELL_SRCS := $(addprefix $(SHELL_ROOT)/, $(SHELL_SRCS))
 
 ENVS_SRCS := cenv.c cenv_print.c envs.c envs_func.c

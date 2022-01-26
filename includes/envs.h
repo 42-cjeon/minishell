@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   envs.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 12:40:22 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:37:22 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:32:27 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENVS_H
 # define ENVS_H
 
-# include "libft.h"
 # include "cenv.h"
+# include "libft.h"
 
 typedef struct s_envs
 {
