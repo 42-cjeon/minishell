@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:19 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 16:58:48 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:26:50 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	ft_env(char **cmd, const t_envs *envs)
 	{
 		errno = ENOENT;
 		prefix = ft_strjoin("env: ", cmd[1]);
-		if (!prefix)
-			ft_perror_texit(PROJECT_NAME, 1);
 		ft_perror(prefix);
 		return (127);
 	}

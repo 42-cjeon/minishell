@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 17:00:37 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:26:58 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ static char	*nonnumeric_stmt_create(const char *str)
 	char	*tmp;
 
 	tmp = ft_strjoin("exit: ", str);
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
 	ret = ft_strjoin(tmp, ": numeric argument required");
 	free(tmp);
 	return (ret);

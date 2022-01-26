@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 17:02:32 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:28:14 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static char	*stmt_create(const char *str)
 	char	*tmp;
 
 	tmp = ft_strjoin("export: `", str);
-	if (!tmp)
-		ft_perror_texit(PROJECT_NAME, 1);
 	ret = ft_strjoin(tmp, "\': not a valid identifier");
 	free(tmp);
 	return (ret);
