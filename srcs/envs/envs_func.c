@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 03:31:35 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 14:25:37 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 15:08:55 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,8 @@ void	envs_insert(const t_envs *envs, const char *str)
 
 	cenv = cenv_create(str);
 	if (cenv->value)
-	{
 		ft_llist_push(envs->lst, ft_llnode_create(cenv_create(str)));
-		ft_bstree_insert(envs->bst, ft_bstnode_create(cenv_create(str)));	
-	}
+	ft_bstree_insert(envs->bst, ft_bstnode_create(cenv_create(str)));	
 	cenv_delete(cenv);
 }
 
