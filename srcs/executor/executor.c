@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:05:30 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 18:02:01 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include <stdio.h>
+#include "readline/readline.h"
 #include "executor.h"
 #include "libft.h"
 #include "parser.h"
@@ -69,13 +71,41 @@ int handle_redir_append(const t_redir *redir)
 	return (0);
 }
 
-int handle_redir_heredoc(const t_redir *redir)
+int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 {
-	(void)redir;
-	return (1);
+	char	*line;
+	int		fd;
+	int		heredoc_pipe[2];
+
+	fd = open(si->default_stdin, O_RDONLY);
+	if (fd == -1)
+		ft_perror_texit(PROJECT_NAME, 1);
+	ft_dup2(fd, STDIN_FILENO);
+	ft_close(fd);
+	ft_pipe(heredoc_pipe);
+
+	while (1)
+	{
+		line = readline("> ");
+		if (line == NULL)
+		{
+			free(line);
+			ft_close(heredoc_pipe[0]);
+			ft_close(heredoc_pipe[1]);
+			return (1);
+		}
+		if (streq(line, redir->target))
+			break ;
+		write(heredoc_pipe[1], line, ft_strlen(line));
+		write(heredoc_pipe[1], "\n", 1);
+		free(line);
+	}
+	ft_close(heredoc_pipe[1]);
+	ft_dup2(heredoc_pipe[0], STDIN_FILENO);
+	return (0);
 }
 
-int handle_redirect(t_redir *redir)
+int handle_redirect(t_shell_info *si, t_redir *redir)
 {
 	int is_redir_fail;
 
@@ -89,7 +119,7 @@ int handle_redirect(t_redir *redir)
 		else if (redir->type == REDIR_APPEND)
 			is_redir_fail = handle_redir_append(redir);
 		else if (redir->type == REDIR_HEREDOC)
-			is_redir_fail = handle_redir_heredoc(redir);
+			is_redir_fail = handle_redir_heredoc(si, redir);
 		redir = redir->next;
 	}
 	return (is_redir_fail);
@@ -253,7 +283,7 @@ void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, 
 		ft_perror_texit(PROJECT_NAME, 1);
 	else if (pid == 0)
 	{
-		if (handle_redirect(command->redir))
+		if (handle_redirect(si, command->redir))
 			exit(1);
 		close_pipes(pipes);
 		type = is_builtin(command);
@@ -399,7 +429,7 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 {
 	t_builtin_types	type;
 
-	if (handle_redirect(pipeline->commands->redir))
+	if (handle_redirect(si, pipeline->commands->redir))
 		return (1);
 	type = is_builtin(pipeline->commands);
 	if (type)
