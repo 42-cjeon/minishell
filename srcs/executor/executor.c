@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 13:52:36 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 13:55:43 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void execute_simple_cmd(t_shell_info *si, char **cmd)
 	if (ft_strchr(cmd[0], '/'))
 	{
 		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
-			ft_perror_texit(PROJECT_NAME, 4);
+			ft_perror_texit(PROJECT_NAME, 1);
 	}
  	path_arr = get_path_arr(si->envs);
 	if (path_arr)
@@ -243,7 +243,7 @@ void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, 
 	
 	pid = fork();
 	if (pid == -1)
-		ft_perror_texit(PROJECT_NAME, 5);
+		ft_perror_texit(PROJECT_NAME, 1);
 	else if (pid == 0)
 	{
 		if (handle_redirect(command->redir))
@@ -294,7 +294,7 @@ void replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 	{
 		fd = open(si->default_stdin, O_RDONLY);
 		if (fd == -1)
-			ft_perror_texit(PROJECT_NAME, 6);
+			ft_perror_texit(PROJECT_NAME, 1);
 		ft_dup2(fd, STDIN_FILENO);
 		ft_close(fd);
 	}
@@ -304,7 +304,7 @@ void replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 	{
 		fd = open(si->default_stdout, O_WRONLY);
 		if (fd == -1)
-			ft_perror_texit(PROJECT_NAME, 7);
+			ft_perror_texit(PROJECT_NAME, 1);
 		ft_dup2(fd, STDOUT_FILENO);
 		ft_close(fd);
 	}
@@ -341,7 +341,7 @@ int wait_childs(t_pipeline *pipeline)
 	while (i < pipeline->len)
 	{
 		if (waitpid(pipeline->childs[i], &status, 0) == -1)
-			ft_perror_texit(PROJECT_NAME, 8);
+			ft_perror_texit(PROJECT_NAME, 1);
 		i++;
 	}
 	if (ft_wifexited(status))
@@ -357,7 +357,7 @@ int wait_child(pid_t pid)
 	int	status;
 
 	if (waitpid(pid, &status, 0) == -1)
-		ft_perror_texit(PROJECT_NAME, 9);
+		ft_perror_texit(PROJECT_NAME, 1);
 	if (ft_wifexited(status))
 		return (ft_wexitstatus(status));
 	else if (ft_wifsignaled(status))
