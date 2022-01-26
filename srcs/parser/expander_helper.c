@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:42:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 15:21:09 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 15:44:46 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,18 @@ size_t	replace_variable(t_shell_info *si, char **str, const size_t start)
 	if (len == 0)
 		return (1);
 	else if (len == 1 && (*str)[start + len] == '?')
+	{
 		varvalue = ft_itoa(si->last_status);
+		newstr = ft_replace_str(*str, start, len + 1, varvalue);
+		free(varvalue);
+	}
 	else
 	{
 		varname = ft_substr(*str, start + 1, len);
 		varvalue = envs_get_value(si->envs, varname);
 		free(varname);
-		if (varvalue == NULL)
-			varvalue = ft_strdup("");
+		newstr = ft_replace_str(*str, start, len + 1, varvalue);
 	}
-	newstr = ft_replace_str(*str, start, len + 1, varvalue);
-	free(varvalue);
 	free(*str);
 	*str = newstr;
 	return (len);
