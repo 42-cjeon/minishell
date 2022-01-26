@@ -48,9 +48,7 @@ int	expand_variable(t_expander_context *context)
 	{
 		if (tk_isdollarsign(context->curr->token[cursor]))
 		{
-			len = replace_variable(&context->curr->token, cursor);
-			if (len == 0)
-				return (EXP_EMALLOC);
+			len = replace_variable(context->si, &context->curr->token, cursor);
 			cursor += len;
 		}
 		else
@@ -94,22 +92,22 @@ int del_space_node(t_expander_context *context)
 	return (EXP_JUMP);
 }
 
-int	expand(t_tokenv *tokenv)
+int	expand(t_shell_info *si, t_tokenv *tokenv)
 {
 	t_expander_result	result;
 
-	result = for_each_node(tokenv, expand_variable);
+	result = for_each_node(si, tokenv, expand_variable);
 	if (result != EXP_SUCCESS)
 		return (result);
-	result = for_each_node(tokenv, expand_word_splitting);
+	result = for_each_node(si, tokenv, expand_word_splitting);
 	if (result != EXP_SUCCESS)
 		return (result);
-	result = for_each_node(tokenv, merge_string_tokens);
+	result = for_each_node(si, tokenv, merge_string_tokens);
 	if (result != EXP_SUCCESS)
 		return (result);
-	result = for_each_node(tokenv, expand_filename);
+	result = for_each_node(si, tokenv, expand_filename);
 	if (result != EXP_SUCCESS)
 		return (result);
-	for_each_node(tokenv, del_space_node);
+	for_each_node(si, tokenv, del_space_node);
 	return (EXP_SUCCESS);
 }
