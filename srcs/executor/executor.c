@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 12:53:14 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 13:55:43 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-#include <stdio.h>
+#include <sys/stat.h>
 
 #include "executor.h"
 #include "libft.h"
@@ -165,10 +164,49 @@ int execute_subshell(char *cmd)
 	/* call parser */
 }
 
-int execute_simple_cmd(t_shell_info *si, char **cmd)
+char **get_path_arr(t_envs *envs)
+{
+	char *path;
+	char **path_arr;
+
+	path = envs_get_value(envs, "PATH");
+	if (path == NULL)
+		return (NULL);
+	path_arr = ft_split(path, ':');
+	return (path_arr);
+}
+
+void search_execve(char **path, char **cmd, char **envs)
+{
+	size_t	i;
+	char	*cmd_temp;
+	char	*cmd_path;	
+	struct stat st;
+	
+	i = 0;
+	while (path[i])
+	{
+		if (*path[i] == '/')
+		{
+			cmd_temp = ft_strjoin("/", cmd[0]);
+			cmd_path = ft_strjoin(path[i], cmd_temp);
+			if (!lstat(cmd_path, &st))
+			{
+				free(cmd[0]);
+				cmd[0] = cmd_path;
+				execve(cmd[0], cmd, envs);
+			}
+			free(cmd_path);
+			free(cmd_temp);
+		}
+		i++;
+	}
+}
+
+void execute_simple_cmd(t_shell_info *si, char **cmd)
 {
 	char **envs_arr;
-	char **path;
+	char **path_arr;
 
 	envs_arr = envs_to_arr(si->envs);
 	if (ft_strchr(cmd[0], '/'))
@@ -176,8 +214,14 @@ int execute_simple_cmd(t_shell_info *si, char **cmd)
 		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
 			ft_perror_texit(PROJECT_NAME, 1);
 	}
- 	
-	return (1);
+ 	path_arr = get_path_arr(si->envs);
+	if (path_arr)
+		search_execve(path_arr, cmd, envs_arr);
+	envs_arr_delete(envs_arr);
+	write(STDERR_FILENO, "minishell: ", 11);
+	write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
+	write(STDERR_FILENO, ": command not found\n", 20);
+	exit(127);
 }
 
 void close_pipes(t_pipes *pipes)
@@ -211,7 +255,7 @@ void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, 
 		else if (command->type == C_SUBSHELL)
 			exit(execute_subshell(command->data.s));
 		else /* type == C_COMMAND */
-			exit(execute_simple_cmd(si, command->data.c));
+			execute_simple_cmd(si, command->data.c);
 	}
 	else if (pid > 0)
 		*child = pid;
@@ -248,7 +292,7 @@ void replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 
 	if (pipes->prev_pipe[0] == -1)
 	{
-		fd = open(si->default_stdin, O_WRONLY);
+		fd = open(si->default_stdin, O_RDONLY);
 		if (fd == -1)
 			ft_perror_texit(PROJECT_NAME, 1);
 		ft_dup2(fd, STDIN_FILENO);
@@ -258,7 +302,7 @@ void replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 		ft_dup2(pipes->prev_pipe[0], STDIN_FILENO);
 	if (pipes->curr_pipe[0] == -1)
 	{
-		fd = open(si->default_stdout, O_RDONLY);
+		fd = open(si->default_stdout, O_WRONLY);
 		if (fd == -1)
 			ft_perror_texit(PROJECT_NAME, 1);
 		ft_dup2(fd, STDOUT_FILENO);
@@ -296,7 +340,7 @@ int wait_childs(t_pipeline *pipeline)
 	i = 0;
 	while (i < pipeline->len)
 	{
-		if (waitpid(pipeline->childs[i], &status, 0))
+		if (waitpid(pipeline->childs[i], &status, 0) == -1)
 			ft_perror_texit(PROJECT_NAME, 1);
 		i++;
 	}
@@ -357,9 +401,9 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 		return (execute_subshell(pipeline->commands->data.s));
 	pipeline->childs[0] = fork();
 	if (pipeline->childs[0] == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
+		ft_perror_texit(PROJECT_NAME, 10);
 	else if (pipeline->childs[0] == 0)
-		exit(execute_simple_cmd(si, pipeline->commands->data.c));
+		execute_simple_cmd(si, pipeline->commands->data.c);
 	return (wait_child(pipeline->childs[0]));
 }
 
