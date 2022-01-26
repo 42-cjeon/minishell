@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:44:26 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 13:03:28 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int main(int argc, char *argv[], const char *envp[])
 	while (1)
 	{
 		line = shell_readline();
+		if (!line)
+			break ;
 		shell_add_history(line);
 		process_line(line, &si);
 		free(line);
