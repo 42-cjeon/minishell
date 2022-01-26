@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:22:03 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 12:26:28 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 12:34:22 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "readline/readline.h"
 #include "readline/history.h"
 #include "libft.h"
+#include "envs.h"
 
 static void	handler(int signum)
 {
@@ -28,8 +29,13 @@ static void	handler(int signum)
 	rl_redisplay();
 }
 
-void	shell_init(void)
+void	shell_init(t_shell_info *si, const char *envp[])
 {
+	si->default_stdin = ttyname(STDIN_FILENO);
+	si->default_stdout = ttyname(STDOUT_FILENO);
+	si->default_stderr = ttyname(STDERR_FILENO);
+	si->last_status = 0;
+	si->envs = envs_create(envp);
 	rl_catch_signals = 0;
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
@@ -38,6 +44,13 @@ void	shell_init(void)
 	signal(SIGTSTP, handler);
 	signal(SIGTTIN, handler);
 	signal(SIGTTOU, handler);
+}
+
+void	shell_deinit(t_shell_info *si)
+{
+	if (si->envs)
+		envs_delete(si->envs);
+	ft_memset(si, 0, sizeof(t_shell_info));
 }
 
 void	shell_print_banner(void)

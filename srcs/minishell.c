@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 13:30:28 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 12:44:26 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include "shell.h"
 #include "tokenizer.h"
 #include "executor.h"
-#include "envs.h"
 
 void print_redir(t_command *cmd)
 {
@@ -113,25 +112,16 @@ void print_tokens(t_tokenv *tokenv)
 	}
 }
 
-void init_si(t_shell_info *si)
-{
-	si->default_stdin = ttyname(STDIN_FILENO);
-	si->default_stdout = ttyname(STDOUT_FILENO);
-	si->default_stderr = ttyname(STDERR_FILENO);
-	si->last_status = 0;
-}
-
-int process_line(char *line)
+int process_line(char *line, t_shell_info *si)
 {
 	t_tokenv	tokenv;
 	t_line_info	li;
-	t_shell_info si;
 
 	tokenv_init(&tokenv);
 	if (tokenize(line, &tokenv) || expand(&tokenv) || lex(&tokenv))
 	{
 		tokenv_clear(&tokenv);
-		si.last_status = 1;
+		si->last_status = 1;
 		return (1);
 	}
 	ft_memset(&li, 0, sizeof(t_line_info));
@@ -140,13 +130,11 @@ int process_line(char *line)
 	{
 		printf("Parse FAIL\n");
 		tokenv_clear(&tokenv);
-		si.last_status = 1;
+		si->last_status = 1;
 		return (1);
 	}
-	init_si(&si);
-	
 	//print_li(&li);
-	execute_line(&si, li.head);
+	execute_line(si, li.head);
 	tokenv_clear(&tokenv);
 	line_info_clear(&li);
 	return (0);
@@ -154,21 +142,20 @@ int process_line(char *line)
 
 int main(int argc, char *argv[], const char *envp[])
 {
-	char	*line;
-	t_envs	*envs;
+	t_shell_info	si;
+	char			*line;
 
 	argc = 0;
 	argv = NULL;
-	envs = envs_create(envp);
-	shell_init();
+	shell_init(&si, envp);
 	shell_print_banner();
 	while (1)
 	{
 		line = shell_readline();
 		shell_add_history(line);
-		process_line(line);
+		process_line(line, &si);
 		free(line);
 	}
-	envs_delete(envs);
+	shell_deinit(&si);
 	return (0);
 }
