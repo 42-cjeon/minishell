@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 13:55:43 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:05:30 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,19 @@ int execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
 		return (1);
 }
 
-int execute_subshell(char *cmd)
+int execute_subshell(t_shell_info *si, char *cmd)
 {
-	(void)cmd;
-	return (999);
-	/* call parser */
+	t_line_info li;
+
+	si->last_status = 0;
+	li.head = parse_line(si, cmd);
+	if (li.head == NULL)
+		si->last_status = 1;
+	execute_line(si, li.head);
+	line_info_clear(&li);
+	exit(si->last_status);
 }
+
 
 char **get_path_arr(t_envs *envs)
 {
@@ -253,7 +260,7 @@ void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, 
 		if (type)
 			exit(execute_builtin(si, command->data.c, type)); 
 		else if (command->type == C_SUBSHELL)
-			exit(execute_subshell(command->data.s));
+			exit(execute_subshell(si, command->data.s));
 		else /* type == C_COMMAND */
 			execute_simple_cmd(si, command->data.c);
 	}
@@ -397,13 +404,16 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 	type = is_builtin(pipeline->commands);
 	if (type)
 		return (execute_builtin(si, pipeline->commands->data.c, type));
-	else if (pipeline->commands->type == C_SUBSHELL)
-		return (execute_subshell(pipeline->commands->data.s));
 	pipeline->childs[0] = fork();
 	if (pipeline->childs[0] == -1)
 		ft_perror_texit(PROJECT_NAME, 10);
 	else if (pipeline->childs[0] == 0)
-		execute_simple_cmd(si, pipeline->commands->data.c);
+	{
+		if (pipeline->commands->type == C_COMMAND)
+			execute_simple_cmd(si, pipeline->commands->data.c);
+		else if (pipeline->commands->type == C_SUBSHELL)
+			execute_subshell(si, pipeline->commands->data.s);
+	}
 	return (wait_child(pipeline->childs[0]));
 }
 
