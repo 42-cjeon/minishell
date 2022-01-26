@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 16:05:05 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 12:38:58 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:08:56 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+
+#include "libft.h"
 
 t_llist	*ft_llist_create(void (*content_delete)(void*),
 			int (*content_compare)(const void *c1, const void *c2),

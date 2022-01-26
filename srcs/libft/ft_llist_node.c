@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 16:04:28 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 12:38:39 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:09:17 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include <stdlib.h>
+
+#include "libft.h"
 
 t_llnode	*ft_llnode_create(void *content)
 {
