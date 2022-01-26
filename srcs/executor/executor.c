@@ -6,7 +6,7 @@
 /*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/25 10:46:36 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 12:14:40 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include "libft.h"
 #include "parser.h"
 #include "utils.h"
+#include "builtin.h"
+#include "envs.h"
 
 int handle_redir_in(const t_redir *redir)
 {
@@ -134,20 +136,24 @@ t_builtin_types is_builtin(t_command *command)
 	return (BUILTIN_NONE);
 }
 
-int execute_builtin(char **cmd, t_builtin_types type)
+int execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
 {
-	(void)cmd;
-	(void)type;
-	/*
 	if (type == BUILTIN_ECHO)
-	if (type == BUILTIN_CD)
-	if (type == BUILTIN_PWD)
-	if (type == BUILTIN_EXPORT)
-	if (type == BUILTIN_UNSET)
-	if (type == BUILTIN_ENV)
-	if (type == BUILTIN_EXIT)
-	*/
-	return (0);
+		return (ft_echo(cmd));
+	else if (type == BUILTIN_CD)
+		return (ft_cd(cmd));
+	else if (type == BUILTIN_PWD)
+		return (ft_pwd(cmd));
+	else if (type == BUILTIN_EXPORT)
+		return (ft_export(cmd, si->envs));
+	else if (type == BUILTIN_UNSET)
+		return (ft_unset(cmd, si->envs));
+	else if (type == BUILTIN_ENV)
+		return (ft_env(cmd, si->envs));
+	else if (type == BUILTIN_EXIT)
+		return (ft_exit(si->envs));
+	else
+		return (1);
 }
 
 int execute_subshell(char *cmd)
@@ -157,9 +163,14 @@ int execute_subshell(char *cmd)
 	/* call parser */
 }
 
-int execute_simple_cmd(char **cmd)
+int execute_simple_cmd(t_shell_info *si, char **cmd)
 {
-	return (execve(cmd[0], cmd, NULL));
+	if (ft_strchr(cmd[0], '/'))
+	{
+		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
+			ft_perror_texit(PROJECT_NAME, 1);
+	}
+	return (1);
 }
 
 void close_pipes(t_pipes *pipes)
@@ -174,7 +185,7 @@ void close_pipes(t_pipes *pipes)
 		ft_close(pipes->prev_pipe[1]);
 }
 
-void fork_execute_command(t_pipes *pipes, t_command *command, pid_t *child)
+void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, pid_t *child)
 {
 	t_builtin_types	type;
 	pid_t			pid;
@@ -189,11 +200,11 @@ void fork_execute_command(t_pipes *pipes, t_command *command, pid_t *child)
 		close_pipes(pipes);
 		type = is_builtin(command);
 		if (type)
-			exit(execute_builtin(command->data.c, type)); 
+			exit(execute_builtin(si, command->data.c, type)); 
 		else if (command->type == C_SUBSHELL)
 			exit(execute_subshell(command->data.s));
 		else /* type == C_COMMAND */
-			exit(execute_simple_cmd(command->data.c));
+			exit(execute_simple_cmd(si, command->data.c));
 	}
 	else if (pid > 0)
 		*child = pid;
@@ -312,13 +323,13 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	pipes_init(&pipes);
 	move_next_pipe(&pipes, FALSE);
 	replace_stdio_fd(si, &pipes);
-	fork_execute_command(&pipes, &pipeline->commands[0], &pipeline->childs[0]);
+	fork_execute_command(si, &pipes, &pipeline->commands[0], &pipeline->childs[0]);
 	i = 1;
 	while (i < pipeline->len)
 	{
 		move_next_pipe(&pipes, i + 1 == pipeline->len);
 		replace_stdio_fd(si, &pipes);
-		fork_execute_command(&pipes, &pipeline->commands[i], &pipeline->childs[i]);
+		fork_execute_command(si, &pipes, &pipeline->commands[i], &pipeline->childs[i]);
 		i++;
 	}
 	ft_close(pipes.prev_pipe[0]);
@@ -326,7 +337,7 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	return (wait_childs(pipeline));
 }
 
-int execute_single_cmd(t_pipeline *pipeline)
+int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 {
 	t_builtin_types	type;
 
@@ -334,14 +345,14 @@ int execute_single_cmd(t_pipeline *pipeline)
 		return (1);
 	type = is_builtin(pipeline->commands);
 	if (type)
-		return (execute_builtin(pipeline->commands->data.c, type));
+		return (execute_builtin(si, pipeline->commands->data.c, type));
 	else if (pipeline->commands->type == C_SUBSHELL)
 		return (execute_subshell(pipeline->commands->data.s));
 	pipeline->childs[0] = fork();
 	if (pipeline->childs[0] == -1)
 		ft_perror_texit(PROJECT_NAME, 1);
 	else if (pipeline->childs[0] == 0)
-		exit(execute_simple_cmd(pipeline->commands->data.c));
+		exit(execute_simple_cmd(si, pipeline->commands->data.c));
 	return (wait_child(pipeline->childs[0]));
 }
 
@@ -352,7 +363,7 @@ void execute_line(t_shell_info *si, t_command_node *node)
 		if (node->type == C_PIPELINE)
 		{
 			if (node->pipeline->len == 1)
-				si->last_status = execute_single_cmd(node->pipeline);
+				si->last_status = execute_single_cmd(si, node->pipeline);
 			else
 				si->last_status = execute_pipeline(si, node->pipeline);
 			restore_default_fd(si);

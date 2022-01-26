@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: cjeon <student.42seoul.kr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:34:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 03:56:41 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 12:08:48 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_shell_info
 	const char *default_stdout;
 	const char *default_stderr;
 	int last_status;
+	t_envs *envs;
 }	t_shell_info;
 
 typedef enum e_builtin_types
