@@ -6,61 +6,79 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 08:22:16 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 10:31:59 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "libft.h"
 #include <stdlib.h>
+#include <unistd.h>
 
-// static char	*stmt_create(const char *str)
-// {
-// 	char	*ret;
-// 	char	*tmp;
+static char	*nonnumeric_stmt_create(const char *str)
+{
+	char	*ret;
+	char	*tmp;
 
-// 	tmp = ft_strjoin("export: `", str);
-// 	if (!tmp)
-// 		ft_perror_texit(PROJECT_NAME, 1);
-// 	ret = ft_strjoin(tmp, "\': not a valid identifier");
-// 	free(tmp);
-// 	return (ret);
-// }
+	tmp = ft_strjoin("exit: ", str);
+	if (!tmp)
+		ft_perror_texit(PROJECT_NAME, 1);
+	ret = ft_strjoin(tmp, ": numeric argument required");
+	free(tmp);
+	return (ret);
+}
 
-static int	is_error(char **str)
+static int	is_nonnumeric_error(char *str)
 {
 	int	i;
 
-	i = 0;
-	str = NULL;
-	// 1. 첫 번째 argument를 체크하여 정상적인 numeric input인지 확인.
-		// minishell: exit: aaa: numeric argument required
-		// return (255)
-		// bash 종료 o
-	// 2. argument가 2개 이상 존재하기만 해도 아래 오류 뜸.
-		// minishell: exit: too many arguments
-		// return (1)
-		// bash 종료 x
-	// while (str[i])
-	// {
-		
-	// }	
+	i = 1;
+	if (str[0] != '+'
+		|| str[0] != '-' || !ft_isdigit(str[0]))
+		return (1);
+	while (str[i] != '\0')
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+	}
+	return (0);
+}
+
+static int	is_argnum_error(char **str)
+{
+	int	argc;
+
+	argc = 0;
+	while (str[argc])
+		++argc;
+	if (argc > 2)
+		return (1);
 	return (0);
 }
 
 int	ft_exit(char **cmd)
 {
-	int	status;
+	int		status;
+	char	*stmt;
 
 	if (!cmd || !(*cmd))
 		return (1);
-	if (is_error(cmd))
+	if (is_nonnumeric_error(cmd[1]))
 	{
-		// put error
+		stmt = nonnumeric_stmt_create(cmd[1]);
+		// 이 에러는 bash가 종료됨.
+		ft_perror_custom_texit(PROJECT_NAME, stmt, 1);
+	}
+	else if (is_argnum_error(cmd))
+	{
+		ft_perror_custom(PROJECT_NAME, "exit: too many arguments");
+		// 이 에러는 bash가 종료되지 않음.
+		return (1);
 	}
 	if (cmd[1])
 	{
 		status = ft_atoi(cmd[1]);
+		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(status);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 08:22:34 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 12:12:17 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int	ft_export(char **cmd, const t_envs *envs)
 			if (is_error(cmd[i]))
 			{
 				stmt = stmt_create(cmd[i]);
-				ft_perror_custom_texit(PROJECT_NAME, stmt, 1);
+				ft_perror_custom(PROJECT_NAME, stmt);
+				return (1);
 			}
 			envs_insert(envs, cmd[i]);
 			++i;
