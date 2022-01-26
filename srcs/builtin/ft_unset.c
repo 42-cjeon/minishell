@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:12:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:11:40 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 14:38:08 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	is_error(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(str[0]))
+	if (!ft_isalpha(str[0]) && (str[0] != '_'))
 		return (1);
 	while (str[i])
 	{
@@ -55,6 +55,7 @@ int	ft_unset(char **cmd, const t_envs *envs)
 		{
 			stmt = stmt_create(cmd[i]);
 			ft_perror_custom(PROJECT_NAME, stmt);
+			free(stmt);
 			return (1);
 		}
 		envs_erase(envs, cmd[i]);

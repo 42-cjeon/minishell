@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 12:12:17 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 14:38:16 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static int	is_error(char *str)
 	ret = 0;
 	i = 0;
 	cenv = cenv_create(str);
-	if (ft_isdigit(cenv->key[0]))
+	if (!ft_isalpha(cenv->key[0]) && (cenv->key[0] != '_'))
 		ret = 1;
 	else
 	{
 		while (cenv->key[i])
 		{
-			if (!ft_isalpha(cenv->key[i]) && !ft_isdigit(cenv->key[i])
-				&& (cenv->key[i] != '_') && (cenv->key[i] != '-'))
+			if (!ft_isalpha(cenv->key[i])
+				&& !ft_isdigit(cenv->key[i]) && (cenv->key[i] != '_'))
 			{
 				ret = 1;
 				break ;
@@ -61,7 +61,7 @@ int	ft_export(char **cmd, const t_envs *envs)
 	int		i;
 
 	i = 1;
-	if (cmd[i])
+	if (!(cmd[i]))
 		envs_print(envs, PORDER_SORTED);
 	else
 	{
@@ -71,6 +71,7 @@ int	ft_export(char **cmd, const t_envs *envs)
 			{
 				stmt = stmt_create(cmd[i]);
 				ft_perror_custom(PROJECT_NAME, stmt);
+				free(stmt);
 				return (1);
 			}
 			envs_insert(envs, cmd[i]);
