@@ -48,7 +48,8 @@ MV = mv
 
 SHELL = /bin/sh
 
-prefix = /usr/local
+# prefix = /usr/local
+prefix = .
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
