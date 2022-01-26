@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:36:34 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/24 23:21:58 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 14:36:24 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 #include "tokenizer.h"
+#include "shell.h"
 
 typedef enum e_parser_result
 {
@@ -114,7 +115,7 @@ int				parse_redir_in_target(t_token_node *curr, t_redir *redir);
 int				parse_redir(t_token_node *curr, t_command *cmd);
 t_redir			*get_redir(void);
 int				parse(t_tokenv *tokenv, t_line_info *li);
-t_command_node	*parse_line(char *line);
+t_command_node	*parse_line(t_shell_info *si, char *line);
 void			line_info_clear(t_line_info *li);
 void			command_node_clear(t_command_node *node);
 void			pipeline_clear(t_pipeline *pipeline);

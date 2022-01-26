@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:36:31 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 14:39:35 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "expander.h"
 #include "parser.h"
 #include "libft.h"
+#include "shell.h"
 
 int parse(t_tokenv *tokenv, t_line_info *li)
 {
@@ -26,13 +27,13 @@ int parse(t_tokenv *tokenv, t_line_info *li)
 	return (parse_pipeline(&context));
 }
 
-t_command_node *parse_line(char *line)
+t_command_node *parse_line(t_shell_info *si, char *line)
 {
 	t_tokenv	tokenv;
 	t_line_info	li;
 
 	tokenv_init(&tokenv);
-	if (tokenize(line, &tokenv) || expand(&tokenv) || lex(&tokenv))
+	if (tokenize(line, &tokenv) || expand(si, &tokenv) || lex(&tokenv))
 	{
 		tokenv_clear(&tokenv);
 		return (NULL);

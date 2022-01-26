@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:11:09 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:49:14 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 14:34:15 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <dirent.h>
 
 # include "tokenizer.h"
+# include "shell.h"
 
 typedef enum e_expander_result
 {
@@ -29,6 +30,7 @@ typedef enum e_expander_result
 
 typedef struct s_expander_context
 {
+	t_shell_info	*si;
 	t_tokenv		*tokenv;
 	t_tokenv		*next_tokenv;
 	t_token_node	*prev;
@@ -55,7 +57,7 @@ typedef struct s_wildcard_info
 
 typedef int	(*t_expander)(t_expander_context *context);
 
-int	expand(t_tokenv *tokenv);
+int	expand(t_shell_info *si, t_tokenv *tokenv);
 int	expand_word_splitting(t_expander_context *context);
 int	expand_variable(t_expander_context *context);
 int	expand_filename(t_expander_context *context);
@@ -85,6 +87,8 @@ int append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames);
 void append_nomatch(t_wildcard_info *wcinfo, t_tokenv *tokenv);
 t_bool exp_is_wildcard_start(t_token_node *curr, t_token_node *next);
 t_bool exp_iswildcard(t_token_node *node);
-t_expander_result	for_each_node(t_tokenv *tokenv, t_expander expander);
-size_t	replace_variable(char **str, const size_t start);
+t_expander_result	for_each_node(t_shell_info *si, t_tokenv *tokenv, t_expander expander);
+size_t	replace_variable(t_shell_info *si, char **str, const size_t start);
+size_t	get_varname_len(char *str);
+
 #endif

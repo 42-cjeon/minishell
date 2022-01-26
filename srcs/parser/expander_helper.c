@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:42:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:49:25 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/26 14:49:19 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft.h"
 #include "tk_types.h"
 #include "utils.h"
+#include "shell.h"
 
 t_bool exp_is_wildcard_start(t_token_node *curr, t_token_node *next)
 {
@@ -33,7 +34,7 @@ t_bool exp_iswildcard(t_token_node *node)
 	return (node->type == TK_STRING || node->type == TK_WILDCARD);
 }
 
-t_expander_result	for_each_node(t_tokenv *tokenv, t_expander expander)
+t_expander_result	for_each_node(t_shell_info *si, t_tokenv *tokenv, t_expander expander)
 {
 	t_expander_context	context;
 	t_expander_result	result;
@@ -41,6 +42,7 @@ t_expander_result	for_each_node(t_tokenv *tokenv, t_expander expander)
 	context.tokenv = tokenv;
 	context.prev = NULL;
 	context.curr = tokenv->head;
+	context.si = si;
 	while (context.curr)
 	{
 		result = expander(&context);
@@ -58,29 +60,40 @@ t_expander_result	for_each_node(t_tokenv *tokenv, t_expander expander)
 	return (EXP_SUCCESS);
 }
 
-size_t	replace_variable(char **str, const size_t start)
+size_t	get_varname_len(char *str)
+{
+	size_t len;
+
+	len = 1;
+	if (*str == '?')
+		return (2);
+	while (str[len] != '\0' && tk_isidentifier(str[len]))
+		len++;
+	return (len);
+}
+
+size_t	replace_variable(t_shell_info *si, char **str, const size_t start)
 {
 	size_t	len;
 	char	*varname;
 	char	*newstr;
+	char	*varvalue;
 
-	len = 1;
-	while ((*str)[len + start] != '\0' \
-		&& tk_isidentifier((*str)[len + start]))
-		len++;
+	len = get_varname_len(*str + start + 1);
 	if (len == 1)
-	{
-		if ((*str)[len] == '?')
-			return (2); // need implement
 		return (1);
+	else if (len == 2)
+		varvalue = ft_itoa(si->last_status);
+	else
+	{
+		varname = ft_substr(*str, start + 1, len - 1);
+		varvalue = envs_get_value(si->envs, varname);
+		free(varname);
+		if (varvalue == NULL)
+			varvalue = ft_strdup("");
 	}
-	varname = ft_substr(*str, start + 1, len - 1);
-	if (varname == NULL)
-		return (0);
-	newstr = ft_replace_str(*str, start, len, getenv(varname));
-	free(varname);
-	if (newstr == NULL)
-		return (0);
+	newstr = ft_replace_str(*str, start, len, varvalue);
+	free(varvalue);
 	free(*str);
 	*str = newstr;
 	return (len);
