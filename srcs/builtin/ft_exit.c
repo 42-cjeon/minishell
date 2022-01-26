@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 13:41:26 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 14:40:36 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_exit(char **cmd)
 	if (is_nonnumeric_error(cmd[1]))
 	{
 		stmt = nonnumeric_stmt_create(cmd[1]);
-		ft_perror_custom_texit(PROJECT_NAME, stmt, 1);
+		ft_perror_custom_texit(PROJECT_NAME, stmt, 255);
 	}
 	else if (is_argnum_error(cmd))
 	{
