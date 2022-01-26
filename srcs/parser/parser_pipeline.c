@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_pipeline.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:04:16 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:32:02 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 22:08:35 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_pipeline	*get_pipeline(t_token_node *node)
 	t_pipeline	*pipeline;
 
 	len = 1;
-	while (node)
+	while (node && !tk_islogicaloper(node->type))
 	{
 		if (node->type == TK_PIPE)
 			len++;
