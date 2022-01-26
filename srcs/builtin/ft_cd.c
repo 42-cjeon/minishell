@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:13:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 07:38:18 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 12:08:04 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int	ft_cd(char **cmd)
 	if (cmd[1])
 	{
 		if (chdir(cmd[1]) == -1)
-			ft_perror_texit(PROJECT_NAME, 1);
+		{
+			ft_perror(PROJECT_NAME);
+			return (1);
+		}
 	}
 	return (0);
 }
