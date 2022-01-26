@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 13:03:28 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 14:42:35 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,32 +112,15 @@ void print_tokens(t_tokenv *tokenv)
 	}
 }
 
-int process_line(char *line, t_shell_info *si)
+void process_line(char *line, t_shell_info *si)
 {
-	t_tokenv	tokenv;
-	t_line_info	li;
+	t_line_info li;
 
-	tokenv_init(&tokenv);
-	if (tokenize(line, &tokenv) || expand(&tokenv) || lex(&tokenv))
-	{
-		tokenv_clear(&tokenv);
+	li.head = parse_line(si, line);
+	if (li.head == NULL)
 		si->last_status = 1;
-		return (1);
-	}
-	ft_memset(&li, 0, sizeof(t_line_info));
-	//print_tokens(&tokenv);
-	if (parse(&tokenv, &li))
-	{
-		printf("Parse FAIL\n");
-		tokenv_clear(&tokenv);
-		si->last_status = 1;
-		return (1);
-	}
-	//print_li(&li);
 	execute_line(si, li.head);
-	tokenv_clear(&tokenv);
 	line_info_clear(&li);
-	return (0);
 }
 
 int main(int argc, char *argv[], const char *envp[])
