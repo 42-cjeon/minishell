@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:19 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 13:22:09 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 16:58:48 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
+
 #include "builtin.h"
-#include "errno.h"
 
 int	ft_env(char **cmd, const t_envs *envs)
 {

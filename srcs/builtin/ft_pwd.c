@@ -6,14 +6,15 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:50:11 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 20:47:15 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:03:11 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+
 #include "builtin.h"
 #include "libft.h"
-#include <unistd.h>
-#include <stdlib.h>
 
 int	ft_pwd(char **cmd)
 {

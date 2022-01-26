@@ -6,13 +6,14 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:59 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 14:38:16 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:02:32 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "builtin.h"
 #include "envs.h"
-#include <stdlib.h>
 
 static char	*stmt_create(const char *str)
 {

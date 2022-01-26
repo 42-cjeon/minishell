@@ -6,14 +6,15 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 14:40:36 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:00:37 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
-#include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "builtin.h"
+#include "libft.h"
 
 static char	*nonnumeric_stmt_create(const char *str)
 {

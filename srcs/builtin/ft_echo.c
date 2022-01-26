@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:04 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 07:38:08 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 16:58:09 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
 #include <unistd.h>
+
+#include "builtin.h"
 
 int	ft_echo(char **cmd)
 {

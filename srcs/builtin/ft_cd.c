@@ -6,13 +6,14 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:13:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 13:09:49 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 16:57:03 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#include "builtin.h"
 
 static char	*prefix_create(const char *str)
 {
