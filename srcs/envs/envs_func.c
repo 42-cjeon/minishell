@@ -6,12 +6,13 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 03:31:35 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 15:08:55 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:07:21 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envs.h"
 #include <stdlib.h>
+
+#include "envs.h"
 
 static char	*str_make(const char *key, const char *value)
 {
@@ -54,7 +55,7 @@ void	envs_insert(const t_envs *envs, const char *str)
 	cenv = cenv_create(str);
 	if (cenv->value)
 		ft_llist_push(envs->lst, ft_llnode_create(cenv_create(str)));
-	ft_bstree_insert(envs->bst, ft_bstnode_create(cenv_create(str)));	
+	ft_bstree_insert(envs->bst, ft_bstnode_create(cenv_create(str)));
 	cenv_delete(cenv);
 }
 
