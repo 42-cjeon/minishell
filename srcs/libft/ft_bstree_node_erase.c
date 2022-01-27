@@ -6,7 +6,7 @@
 /*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:23:00 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/25 11:55:38 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 20:05:16 by hanelee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static t_bstnode	*ft_bstnode_erase_do(t_bstnode *bstnode,
 						void (*content_delete)(void *))
 {
 	t_bstnode	*tmp;
+	void		*p;
 
 	if (!(bstnode->left))
 	{
@@ -43,7 +44,9 @@ static t_bstnode	*ft_bstnode_erase_do(t_bstnode *bstnode,
 		return (tmp);
 	}
 	tmp = ft_bstnode_find_min(bstnode->right);
+	p = bstnode->content;
 	bstnode->content = tmp->content;
+	tmp->content = p;
 	bstnode->right = ft_bstnode_erase(bstnode->right,
 			tmp->content, content_compare, content_delete);
 	return (bstnode);
