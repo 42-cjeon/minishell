@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/27 14:58:17 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 15:43:12 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 #include "parser.h"
 #include "shell.h"
 #include "tokenizer.h"
+#include "utils.h"
 
-void process_line(char *line, t_shell_info *si)
+void	process_line(char *line, t_shell_info *si)
 {
-	t_line_info li;
+	t_line_info	li;
 
 	li.head = parse_line(si, line);
 	if (li.head == NULL)
@@ -31,7 +32,7 @@ void process_line(char *line, t_shell_info *si)
 	line_info_clear(&li);
 }
 
-int main(int argc, char *argv[], const char *envp[])
+int	main(int argc, char *argv[], const char *envp[])
 {
 	t_shell_info	si;
 	char			*line;
@@ -45,6 +46,11 @@ int main(int argc, char *argv[], const char *envp[])
 		line = shell_readline();
 		if (!line)
 			break ;
+		if (streq(line, ""))
+		{
+			free(line);
+			continue ;
+		}
 		shell_add_history(line);
 		process_line(line, &si);
 		free(line);
