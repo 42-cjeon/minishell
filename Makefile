@@ -48,7 +48,8 @@ OBJS = $(SRCS:.c=.o)
 # -- 나중에 지우기 -- #
 TEST_SRCS := minishell.c
 TEST_SRCS := $(addprefix $(SRCS_ROOT)/test/, $(TEST_SRCS))
-TSRCS = $(PARSER_SRCS) $(TEST_SRCS) $(UTILS_SRCS)
+TSRCS = $(PARSER_SRCS) $(TEST_SRCS) $(SHELL_SRCS) $(UTILS_SRCS) \
+			$(EXECUTOR_SRCS) $(ENVS_SRCS) $(BUILTIN_SRCS)
 TOBJS = $(TSRCS:.c=.o)
 # --            -- #
 
@@ -75,8 +76,8 @@ $(LIBRL) :
 	@$(MAKE) -C $(LIBRL_ROOT) all
 
 # -- 나중에 지우기 -- #
-test : $(TOBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $@ $^
+test : $(TOBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
+	$(CC) $(CFLAGS) -g3 -fsanitize=address -lncurses -o minishell $^
 # --            -- #
 
 clean :
