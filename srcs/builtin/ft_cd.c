@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:13:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 17:26:29 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 19:00:13 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static char	*prefix_create(const char *str)
 
 	tmp = ft_strjoin(PROJECT_NAME, ": cd: ");
 	ret = ft_strjoin(tmp, str);
+	free(tmp);
 	return (ret);
 }
 
