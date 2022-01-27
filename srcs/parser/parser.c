@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 15:50:51 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 16:24:05 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_command_node	*parse_line(t_shell_info *si, char *line)
 	{
 		ft_perror_custom("minishell", "syntex error");
 		tokenv_clear(&tokenv);
-		command_node_clear(li.head);
+		line_info_clear(&li);
 		return (NULL);
 	}
 	tokenv_clear(&tokenv);
