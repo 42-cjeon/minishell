@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:20:32 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:39:09 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:58:48 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	restore_default_fd(t_shell_info *si)
 
 void	replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
 {
-	int	fd;
-
 	if (pipes->prev_pipe[0] == -1)
 		replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
 	else
