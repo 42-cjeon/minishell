@@ -22,7 +22,8 @@ PARSER_SRCS := exp_types.c expand_filename.c expander.c expander_helper.c \
 			parser_cmd_clear.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
 
-EXECUTOR_SRCS := executor.c
+EXECUTOR_SRCS := execute_command.c execute_helper.c executor.c pipe_helper.c \
+				redirection.c redirection_heredoc.c stdio_helper.c wait_child.c
 EXECUTOR_SRCS := $(addprefix $(EXECUTOR_ROOT)/, $(EXECUTOR_SRCS))
 
 UTILS_SRCS := find_last_slash.c move_string.c replace_str.c streq.c
