@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_clear.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 11:06:18 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:27:23 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 15:13:29 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	data_clear(t_cmd_data data, int type)
 	else
 	{
 		cmd_arr = data.c;
+		if (cmd_arr == NULL)
+			return ;
 		while (*cmd_arr)
 			free(*cmd_arr++);
 		free(data.c);

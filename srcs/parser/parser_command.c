@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:06:07 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:28:34 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 15:21:15 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	parse_command(t_parser_context *context, t_command *cmd)
 {
 	size_t	i;
 
-	if (validate_command(context->curr, cmd) != P_SUCCESS)
+	if (context->curr == NULL \
+		|| validate_command(context->curr, cmd) != P_SUCCESS)
 		return (P_ESYNTEX);
 	i = 0;
 	while (context->curr && (context->curr->type == TK_SUBSHELL \
