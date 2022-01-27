@@ -6,15 +6,16 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 07:55:07 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 07:55:39 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:41:33 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char *ft_replace_str(char *str, size_t start, size_t len, char *replace_with)
+char	*ft_replace_str(char *str, size_t start, \
+						size_t len, char *replace_with)
 {
-	char *result;
+	char	*result;
 	size_t	str_length;
 	size_t	with_length;
 

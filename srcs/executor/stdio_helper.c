@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:20:32 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:31:16 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:39:09 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 void	replace_fd(const char *filename, int to_replace_fd, int oflag)
 {
-	int fd;
+	int	fd;
 
 	fd = open(filename, oflag);
 	if (fd == -1)

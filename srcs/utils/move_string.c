@@ -6,13 +6,13 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 09:56:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 09:56:23 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:40:43 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-void move_string(char **dst, char **src)
+void	move_string(char **dst, char **src)
 {
 	*dst = *src;
 	*src = NULL;
