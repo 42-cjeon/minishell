@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:33:40 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 15:50:51 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_command_node	*parse_line(t_shell_info *si, char *line)
 	{
 		ft_perror_custom("minishell", "syntex error");
 		tokenv_clear(&tokenv);
+		command_node_clear(li.head);
 		return (NULL);
 	}
 	tokenv_clear(&tokenv);

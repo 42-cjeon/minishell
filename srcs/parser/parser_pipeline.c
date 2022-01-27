@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:04:16 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 22:08:35 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 16:00:19 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ int	parse_pipeline(t_parser_context *context)
 		index++;
 	}
 	if (result != P_SUCCESS)
-		return (clear_pipeline(context));
+	{
+		pipeline_clear(pipeline);
+		return (P_ESYNTEX);
+	}
 	push_line_info(context->li, get_cmd_node(C_PIPELINE, pipeline));
 	return (next_pipeline(context));
 }
