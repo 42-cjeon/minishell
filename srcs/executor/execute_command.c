@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:15:47 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 15:22:13 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	execute_simple_cmd(t_shell_info *si, char **cmd)
 		search_execve(path_arr, cmd, envs_arr);
 	envs_arr_delete(envs_arr);
 	ft_putstr_fd(PROJECT_NAME, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(cmd[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 	exit(127);
