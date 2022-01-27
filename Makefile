@@ -76,7 +76,7 @@ $(LIBRL) :
 	@$(MAKE) -C $(LIBRL_ROOT) all
 
 # -- 나중에 지우기 -- #
-test : $(TOBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
+test : $(OBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
 	$(CC) $(CFLAGS) -g3 -fsanitize=address -lncurses -o minishell $^
 # --            -- #
 
