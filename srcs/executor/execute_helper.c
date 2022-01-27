@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:01 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:05:40 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:44:11 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "parser.h"
 #include "utils.h"
 
-t_builtin_types	is_builtin(t_command *command)
+int	is_builtin(t_command *command)
 {
 	if (command->type != C_COMMAND)
 		return (BUILTIN_NONE);
