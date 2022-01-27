@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:20:18 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:44:49 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:06:46 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "parser.h"
 
-void pipes_init(t_pipes *pipes)
+void	pipes_init(t_pipes *pipes)
 {
 	pipes->prev_pipe[0] = -1;
 	pipes->prev_pipe[1] = -1;
@@ -22,7 +22,7 @@ void pipes_init(t_pipes *pipes)
 	pipes->curr_pipe[1] = -1;
 }
 
-void close_pipes(t_pipes *pipes)
+void	close_pipes(t_pipes *pipes)
 {
 	if (pipes->curr_pipe[0] != -1)
 		ft_close(pipes->curr_pipe[0]);
@@ -34,7 +34,7 @@ void close_pipes(t_pipes *pipes)
 		ft_close(pipes->prev_pipe[1]);
 }
 
-void move_next_pipe(t_pipes *pipes, int islast)
+void	move_next_pipe(t_pipes *pipes, int islast)
 {
 	if (pipes->prev_pipe[0] != -1)
 		ft_close(pipes->prev_pipe[0]);

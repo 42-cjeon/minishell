@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 12:53:25 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:15:02 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@
 #include "shell.h"
 #include "libft.h"
 
-void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, pid_t *child)
+void	fork_execute_command(t_shell_info *si, t_pipes *pipes, \
+								t_command *command, pid_t *child)
 {
 	t_builtin_types	type;
 	pid_t			pid;
-	
+
 	pid = fork();
 	if (pid == -1)
 		ft_perror_texit(PROJECT_NAME, 1);
@@ -33,17 +34,17 @@ void fork_execute_command(t_shell_info *si, t_pipes *pipes, t_command *command, 
 		close_pipes(pipes);
 		type = is_builtin(command);
 		if (type)
-			exit(execute_builtin(si, command->data.c, type)); 
+			exit(execute_builtin(si, command->data.c, type));
 		else if (command->type == C_SUBSHELL)
 			exit(execute_subshell(si, command->data.s));
-		else /* type == C_COMMAND */
+		else if (command->type == C_COMMAND)
 			execute_simple_cmd(si, command->data.c);
 	}
 	else if (pid > 0)
 		*child = pid;
 }
 
-int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
+int	execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 {
 	t_pipes	pipes;
 	size_t	i;
@@ -51,13 +52,15 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	pipes_init(&pipes);
 	move_next_pipe(&pipes, FALSE);
 	replace_stdio_fd(si, &pipes);
-	fork_execute_command(si, &pipes, &pipeline->commands[0], &pipeline->childs[0]);
+	fork_execute_command(si, \
+		&pipes, &pipeline->commands[0], &pipeline->childs[0]);
 	i = 1;
 	while (i < pipeline->len)
 	{
 		move_next_pipe(&pipes, i + 1 == pipeline->len);
 		replace_stdio_fd(si, &pipes);
-		fork_execute_command(si, &pipes, &pipeline->commands[i], &pipeline->childs[i]);
+		fork_execute_command(si, \
+			&pipes, &pipeline->commands[i], &pipeline->childs[i]);
 		i++;
 	}
 	ft_close(pipes.prev_pipe[0]);
@@ -65,7 +68,7 @@ int execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	return (wait_childs(pipeline));
 }
 
-int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
+int	execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 {
 	t_builtin_types	type;
 
@@ -87,7 +90,7 @@ int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline)
 	return (wait_child(pipeline->childs[0]));
 }
 
-void execute_line(t_shell_info *si, t_command_node *node)
+void	execute_line(t_shell_info *si, t_command_node *node)
 {
 	while (node)
 	{

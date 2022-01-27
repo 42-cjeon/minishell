@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:06 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:51:18 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:11:38 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include "parser.h"
 #include "shell.h"
 
-int handle_redir_in(const t_redir *redir)
+int	handle_redir_in(const t_redir *redir)
 {
 	int	target_fd;
-	
+
 	target_fd = open(redir->target, O_RDONLY);
 	if (target_fd == -1)
 	{
@@ -32,9 +32,9 @@ int handle_redir_in(const t_redir *redir)
 	return (0);
 }
 
-int handle_redir_out(const t_redir *redir)
+int	handle_redir_out(const t_redir *redir)
 {
-	int target_fd;
+	int	target_fd;
 
 	target_fd = open(redir->target, O_WRONLY | O_CREAT, 0644);
 	if (target_fd == -1)
@@ -47,7 +47,7 @@ int handle_redir_out(const t_redir *redir)
 	return (0);
 }
 
-int handle_redir_append(const t_redir *redir)
+int	handle_redir_append(const t_redir *redir)
 {
 	int	target_fd;
 
@@ -62,9 +62,9 @@ int handle_redir_append(const t_redir *redir)
 	return (0);
 }
 
-int handle_redirect(t_shell_info *si, t_redir *redir)
+int	handle_redirect(t_shell_info *si, t_redir *redir)
 {
-	int is_redir_fail;
+	int	is_redir_fail;
 
 	is_redir_fail = 0;
 	while (redir && !is_redir_fail)

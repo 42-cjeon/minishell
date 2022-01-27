@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:01 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 12:44:58 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:05:40 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "parser.h"
 #include "utils.h"
 
-t_builtin_types is_builtin(t_command *command)
+t_builtin_types	is_builtin(t_command *command)
 {
 	if (command->type != C_COMMAND)
 		return (BUILTIN_NONE);
@@ -37,10 +37,10 @@ t_builtin_types is_builtin(t_command *command)
 	return (BUILTIN_NONE);
 }
 
-char **get_path_arr(t_envs *envs)
+char	**get_path_arr(t_envs *envs)
 {
-	char *path;
-	char **path_arr;
+	char	*path;
+	char	**path_arr;
 
 	path = envs_get_value(envs, "PATH");
 	if (path == NULL)

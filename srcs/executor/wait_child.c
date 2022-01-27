@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:18:59 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:58:49 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:08:29 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include "executor.h"
 #include "libft.h"
 
-int wait_childs(t_pipeline *pipeline)
+int	wait_childs(t_pipeline *pipeline)
 {
-	size_t i;
-	int status;
+	size_t	i;
+	int		status;
 
 	i = 0;
 	while (i < pipeline->len)
@@ -35,7 +35,7 @@ int wait_childs(t_pipeline *pipeline)
 		return (status % 128);
 }
 
-int wait_child(pid_t pid)
+int	wait_child(pid_t pid)
 {
 	int	status;
 

@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:48:47 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:07:04 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 	ft_dup2(fd, STDIN_FILENO);
 	ft_close(fd);
 	ft_pipe(heredoc_pipe);
-
 	while (1)
 	{
 		line = readline("> ");

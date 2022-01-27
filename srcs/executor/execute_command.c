@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:59:46 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:15:47 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 #include "parser.h"
 #include "shell.h"
 
-int execute_subshell(t_shell_info *si, char *cmd)
+int	execute_subshell(t_shell_info *si, char *cmd)
 {
-	t_line_info li;
+	t_line_info	li;
 
 	si->last_status = 0;
 	li.head = parse_line(si, cmd);
@@ -33,13 +33,13 @@ int execute_subshell(t_shell_info *si, char *cmd)
 	exit(si->last_status);
 }
 
-void search_execve(char **path, char **cmd, char **envs)
+void	search_execve(char **path, char **cmd, char **envs)
 {
 	size_t		i;
 	char		*cmd_temp;
 	char		*cmd_path;	
 	struct stat	st;
-	
+
 	i = 0;
 	while (path[i])
 	{
@@ -61,10 +61,10 @@ void search_execve(char **path, char **cmd, char **envs)
 	}
 }
 
-void execute_simple_cmd(t_shell_info *si, char **cmd)
+void	execute_simple_cmd(t_shell_info *si, char **cmd)
 {
-	char **envs_arr;
-	char **path_arr;
+	char	**envs_arr;
+	char	**path_arr;
 
 	envs_arr = envs_to_arr(si->envs);
 	if (ft_strchr(cmd[0], '/'))
@@ -72,7 +72,7 @@ void execute_simple_cmd(t_shell_info *si, char **cmd)
 		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
 			ft_perror_texit(PROJECT_NAME, 1);
 	}
- 	path_arr = get_path_arr(si->envs);
+	path_arr = get_path_arr(si->envs);
 	if (path_arr)
 		search_execve(path_arr, cmd, envs_arr);
 	envs_arr_delete(envs_arr);
@@ -82,7 +82,7 @@ void execute_simple_cmd(t_shell_info *si, char **cmd)
 	exit(127);
 }
 
-int execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
+int	execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
 {
 	if (type == BUILTIN_ECHO)
 		return (ft_echo(cmd));
