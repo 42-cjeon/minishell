@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:20:32 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:22:27 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:25:38 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,9 @@ void	replace_fd(const char *filename, int to_replace_fd, int oflag)
 
 void	restore_default_fd(t_shell_info *si)
 {
-	int	fd[3];
-
-	fd[STDIN_FILENO] = open(si->default_stdin, O_RDONLY);
-	if (fd[STDIN_FILENO] == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
-	fd[STDOUT_FILENO] = open(si->default_stdout, O_WRONLY);
-	if (fd[STDOUT_FILENO] == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
-	fd[STDERR_FILENO] = open(si->default_stderr, O_WRONLY);
-	if (fd[STDERR_FILENO] == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
-	ft_dup2(fd[STDIN_FILENO], STDIN_FILENO);
-	ft_dup2(fd[STDOUT_FILENO], STDOUT_FILENO);
-	ft_dup2(fd[STDERR_FILENO], STDERR_FILENO);
-	ft_close(fd[STDIN_FILENO]);
-	ft_close(fd[STDOUT_FILENO]);
-	ft_close(fd[STDERR_FILENO]);
+	replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
+	replace_fd(si->default_stdout, STDOUT_FILENO, O_WRONLY);
+	replace_fd(si->default_stderr, STDERR_FILENO, O_WRONLY);
 }
 
 void	replace_stdio_fd(t_shell_info *si, t_pipes *pipes)
