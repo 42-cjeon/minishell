@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:06 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 16:38:51 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 17:14:20 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "parser.h"
 #include "shell.h"
 
-int perror_redir(char *name, char *target)
+int	perror_redir(char *name, char *target)
 {
 	ft_putstr_fd(name, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
