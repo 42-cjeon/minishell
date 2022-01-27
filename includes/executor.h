@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:34:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:45:13 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 16:39:14 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_pipes
 }	t_pipes;
 
 void	execute_line(t_shell_info *si, t_command_node *node);
+int		perror_redir(char *name, char *target);
 int		handle_redir_in(const t_redir *redir);
 int		handle_redir_out(const t_redir *redir);
 int		handle_redir_append(const t_redir *redir);

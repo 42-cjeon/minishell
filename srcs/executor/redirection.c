@@ -6,16 +6,28 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:06 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:11:38 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 16:38:51 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
 #include <fcntl.h>
+#include <string.h>
 
 #include "executor.h"
 #include "libft.h"
 #include "parser.h"
 #include "shell.h"
+
+int perror_redir(char *name, char *target)
+{
+	ft_putstr_fd(name, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(target, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	return (1);
+}
 
 int	handle_redir_in(const t_redir *redir)
 {
@@ -23,10 +35,7 @@ int	handle_redir_in(const t_redir *redir)
 
 	target_fd = open(redir->target, O_RDONLY);
 	if (target_fd == -1)
-	{
-		ft_perror(PROJECT_NAME);
-		return (1);
-	}
+		return (perror_redir(PROJECT_NAME, redir->target));
 	ft_dup2(target_fd, STDIN_FILENO);
 	ft_close(target_fd);
 	return (0);
@@ -38,10 +47,7 @@ int	handle_redir_out(const t_redir *redir)
 
 	target_fd = open(redir->target, O_WRONLY | O_CREAT, 0644);
 	if (target_fd == -1)
-	{
-		ft_perror(PROJECT_NAME);
-		return (1);
-	}
+		return (perror_redir(PROJECT_NAME, redir->target));
 	ft_dup2(target_fd, STDOUT_FILENO);
 	ft_close(target_fd);
 	return (0);
@@ -53,10 +59,7 @@ int	handle_redir_append(const t_redir *redir)
 
 	target_fd = open(redir->target, O_WRONLY | O_APPEND, 0644);
 	if (target_fd == -1)
-	{
-		ft_perror(PROJECT_NAME);
-		return (1);
-	}
+		return (perror_redir(PROJECT_NAME, redir->target));
 	ft_dup2(target_fd, STDOUT_FILENO);
 	ft_close(target_fd);
 	return (0);
