@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/25 13:19:32 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/27 13:55:37 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,9 @@ void	*ft_malloc(size_t size);
 int		ft_close(int fildes);
 int		ft_dup2(int fildes, int fildes2);
 int		ft_pipe(int fildes[2]);
+int		ft_wtermsig(int status);
+int		ft_wexitstatus(int status);
+int		ft_wifsignaled(int status);
+int		ft_wifexited(int status);
 
 #endif

@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_malloc.c                                        :+:      :+:    :+:   */
+/*   ft_wait.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/09 20:34:39 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/27 13:42:08 by cjeon            ###   ########.fr       */
+/*   Created: 2022/01/27 11:18:10 by cjeon             #+#    #+#             */
+/*   Updated: 2022/01/27 11:18:12 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
-
-void	*ft_malloc(size_t size)
+int ft_wifexited(int status)
 {
-	void	*ret;
+	return ((status & 0177) == 0);
+}
 
-	ret = malloc(size);
-	if (ret == NULL)
-		ft_perror_texit("minishell", 1);
-	return (ret);
+int ft_wifsignaled(int status)
+{
+	return ((status & 0177) != 0);
+}
+
+int ft_wexitstatus(int status)
+{
+	return (((status >> 8) & 0x000000ff) % 128);
+}
+
+int ft_wtermsig(int status)
+{
+	return ((status & 0177) + 128);
 }
