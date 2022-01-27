@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:20:32 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:11:16 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:22:27 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 #include "executor.h"
 #include "libft.h"
 #include "shell.h"
+
+void	replace_fd(const char *filename, int to_replace_fd, int oflag)
+{
+	int fd;
+
+	fd = open(filename, oflag);
+	if (fd == -1)
+		ft_perror_texit(PROJECT_NAME, 1);
+	ft_dup2(fd, to_replace_fd);
+	ft_close(fd);
+}
 
 void	restore_default_fd(t_shell_info *si)
 {

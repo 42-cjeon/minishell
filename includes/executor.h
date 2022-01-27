@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:34:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:54:01 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:22:41 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ int wait_child(pid_t pid);
 int execute_pipeline(t_shell_info *si, t_pipeline *pipeline);
 int execute_single_cmd(t_shell_info *si, t_pipeline *pipeline);
 void execute_line(t_shell_info *si, t_command_node *node);
-
+void	replace_fd(const char *filename, int to_replace_fd, int oflag);
 #endif
