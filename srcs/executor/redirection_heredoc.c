@@ -6,13 +6,14 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:07:04 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/27 14:35:28 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "executor.h"
 #include "fcntl.h"
 #include "libft.h"
 #include "parser.h"
@@ -23,14 +24,9 @@
 int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 {
 	char	*line;
-	int		fd;
 	int		heredoc_pipe[2];
 
-	fd = open(si->default_stdin, O_RDONLY);
-	if (fd == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
-	ft_dup2(fd, STDIN_FILENO);
-	ft_close(fd);
+	replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
 	ft_pipe(heredoc_pipe);
 	while (1)
 	{
