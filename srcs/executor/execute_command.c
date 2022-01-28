@@ -6,13 +6,14 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 15:59:18 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 17:28:52 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 #include "builtin.h"
 #include "executor.h"
@@ -36,20 +37,12 @@ int	execute_subshell(t_shell_info *si, char *cmd)
 	exit(si->last_status);
 }
 
-t_bool	is_excutable(const char *fullpath)
-{
-	struct stat	file_stat;
-
-	if (stat(fullpath, &file_stat))
-		return (FALSE);
-	return ((file_stat.st_mode & S_IFMT) == S_IFREG);
-}
-
 int	search_execve(char **path, char **cmd, char **envs)
 {
 	size_t	i;
 	char	*cmd_temp;
 	char	*cmd_path;
+	int		ftype;
 
 	i = 0;
 	while (path[i])
@@ -58,13 +51,12 @@ int	search_execve(char **path, char **cmd, char **envs)
 		{
 			cmd_temp = ft_strjoin("/", cmd[0]);
 			cmd_path = ft_strjoin(path[i], cmd_temp);
-			if (is_excutable(cmd_path))
-			{
-				if (execve(cmd_path, cmd, envs))
-					ft_perror_texit(PROJECT_NAME, 1);
-			}
-			free(cmd_path);
 			free(cmd_temp);
+			ftype = check_ftype(cmd_path);
+			if (ftype == FT_DIR)
+				command_perror_texit(cmd[0], "is a directory", 126);
+			else if (ftype == FT_FILE && execve(cmd_path, cmd, envs))
+				command_perror_texit(cmd[0], strerror(errno), 126);
 		}
 		i++;
 	}
@@ -75,25 +67,25 @@ void	execute_simple_cmd(t_shell_info *si, char **cmd)
 {
 	char	**envs_arr;
 	char	**path_arr;
+	int		ftype;
 
 	envs_arr = envs_to_arr(si->envs);
 	if (ft_strchr(cmd[0], '/'))
 	{
-		if (!is_excutable(cmd[0]))
-			ft_perror_texit(PROJECT_NAME, 1);
-		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
-			ft_perror_texit(PROJECT_NAME, 1);
+		ftype = check_ftype(cmd[0]);
+		if (ftype == FT_NOTFOUND)
+			command_perror_texit(cmd[0], strerror(errno), 127);
+		else if (ftype == FT_DIR)
+			command_perror_texit(cmd[0], "is a directory", 126);
+		else if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
+			command_perror_texit(cmd[0], strerror(errno), 127);
 	}
 	path_arr = get_path_arr(si->envs);
 	if (!streq(cmd[0], "") && path_arr)
 		search_execve(path_arr, cmd, envs_arr);
 	envs_arr_delete(envs_arr);
 	envs_arr_delete(path_arr);
-	ft_putstr_fd(PROJECT_NAME, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(cmd[0], STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	exit(127);
+	command_perror_texit(cmd[0], "command not found", 127);
 }
 
 int	execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)

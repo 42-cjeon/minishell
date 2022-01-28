@@ -6,9 +6,12 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:01 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:44:11 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 17:29:24 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
+#include <sys/stat.h>
 
 #include "envs.h"
 #include "executor.h"
@@ -47,4 +50,25 @@ char	**get_path_arr(t_envs *envs)
 		return (NULL);
 	path_arr = ft_split(path, ':');
 	return (path_arr);
+}
+
+void	command_perror_texit(char *cmd, char *msg, int status)
+{
+	ft_putstr_fd(PROJECT_NAME, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(msg, STDERR_FILENO);
+	exit(status);
+}
+
+int	check_ftype(char *cmd)
+{
+	struct stat	file_stat;
+
+	if (stat(cmd, &file_stat))
+		return (FT_NOTFOUND);
+	if ((file_stat.st_mode & S_IFMT) == S_IFDIR)
+		return (FT_DIR);
+	return (FT_FILE);
 }
