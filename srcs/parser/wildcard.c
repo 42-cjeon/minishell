@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:49:52 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:40:49 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/28 11:13:16 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, \
 		dir = readdir(ent);
 	}
 	if (errno)
-		ft_perror_texit("minishell", errno + 128);
+		ft_perror_texit(PROJECT_NAME, 1);
 	if (some_matched)
 		return (EXP_SUCCESS);
 	return (EXP_NOMATCH);
@@ -87,6 +87,7 @@ int	append_matched_for_each(DIR *ent, t_wildcard_info *wcinfo, \
 int	append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 {
 	DIR	*ent;
+	int	result;
 
 	if (*wcinfo->basename)
 		ent = opendir(wcinfo->basename);
@@ -96,12 +97,12 @@ int	append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 	{
 		if (errno == ENOENT)
 			return (EXP_NOMATCH);
-		ft_perror_texit("minishell", errno + 128);
+		ft_perror_texit(PROJECT_NAME, 1);
 	}
-	append_matched_for_each(ent, wcinfo, filenames);
+	result = append_matched_for_each(ent, wcinfo, filenames);
 	if (closedir(ent))
-		ft_perror_texit("minishell", errno + 128);
-	return (EXP_SUCCESS);
+		ft_perror_texit(PROJECT_NAME, 1);
+	return (result);
 }
 
 void	append_nomatch(t_wildcard_info *wcinfo, t_tokenv *tokenv)

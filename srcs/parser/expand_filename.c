@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_filename.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:26:56 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:20:47 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/28 11:02:20 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,17 @@ void	get_wildcard_strs(t_expander_context *context, t_wildcard_info *wcinfo)
 
 void	get_wildcard_info(t_expander_context *context, t_wildcard_info *wcinfo)
 {
+	t_token_node	*next;
+
 	add_first_token(wcinfo, context->curr->token);
-	context->prev->next = context->curr->next;
+	if (context->prev == NULL)
+		context->tokenv->head = context->curr->next;
+	else
+		context->prev->next = context->curr->next;
+	next = context->curr->next;
 	free(context->curr->token);
 	free(context->curr);
-	context->curr = context->prev->next;
+	context->curr = next;
 	get_wildcard_strs(context, wcinfo);
 }
 
@@ -60,7 +66,10 @@ int	expand_filename(t_expander_context *context)
 	ft_memset(&matched, 0, sizeof(t_tokenv));
 	if (append_matched(&wcinfo, &matched) == EXP_NOMATCH)
 		append_nomatch(&wcinfo, &matched);
-	context->prev->next = matched.head;
+	if (context->prev == NULL)
+		context->tokenv->head = matched.head;
+	else
+		context->prev->next = matched.head;
 	matched.tail->next = context->curr;
 	return (EXP_STAY);
 }
