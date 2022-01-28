@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:06 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 17:14:20 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 23:52:16 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	handle_redir_out(const t_redir *redir)
 {
 	int	target_fd;
 
-	target_fd = open(redir->target, O_WRONLY | O_CREAT, 0644);
+	target_fd = open(redir->target, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (target_fd == -1)
 		return (perror_redir(PROJECT_NAME, redir->target));
 	ft_dup2(target_fd, STDOUT_FILENO);
@@ -57,7 +57,7 @@ int	handle_redir_append(const t_redir *redir)
 {
 	int	target_fd;
 
-	target_fd = open(redir->target, O_WRONLY | O_APPEND, 0644);
+	target_fd = open(redir->target, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (target_fd == -1)
 		return (perror_redir(PROJECT_NAME, redir->target));
 	ft_dup2(target_fd, STDOUT_FILENO);
