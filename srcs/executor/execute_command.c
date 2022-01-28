@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 15:22:13 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:24:37 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@
 int	execute_subshell(t_shell_info *si, char *cmd)
 {
 	t_line_info	li;
+	int			parse_result;
 
-	si->last_status = 0;
-	li.head = parse_line(si, cmd);
-	if (li.head == NULL)
-		si->last_status = 1;
-	execute_line(si, li.head);
+	ft_memset(&li, 0, sizeof(t_line_info));
+	parse_result = parse_line(si, cmd, &li);
+	if (parse_result == P_ESYNTEX)
+		si->last_status = 258;
+	if (parse_result == P_SUCCESS)
+		execute_line(si, li.head);
 	line_info_clear(&li);
 	exit(si->last_status);
 }
@@ -49,9 +51,7 @@ void	search_execve(char **path, char **cmd, char **envs)
 			cmd_path = ft_strjoin(path[i], cmd_temp);
 			if (!lstat(cmd_path, &st))
 			{
-				free(cmd[0]);
-				cmd[0] = cmd_path;
-				if (execve(cmd[0], cmd, envs))
+				if (execve(cmd_path, cmd, envs))
 					ft_perror_texit(PROJECT_NAME, 1);
 			}
 			free(cmd_path);
