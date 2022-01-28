@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/27 15:43:12 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:15:59 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@
 void	process_line(char *line, t_shell_info *si)
 {
 	t_line_info	li;
+	int			parse_result;
 
-	li.head = parse_line(si, line);
-	if (li.head == NULL)
+	ft_memset(&li, 0, sizeof(t_line_info));
+	parse_result = parse_line(si, line, &li);
+	if (parse_result == P_ESYNTEX)
 		si->last_status = 258;
-	execute_line(si, li.head);
+	if (parse_result == P_SUCCESS)
+		execute_line(si, li.head);
 	line_info_clear(&li);
 }
 

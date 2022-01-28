@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 16:24:05 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:16:31 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,23 @@ int	parse(t_tokenv *tokenv, t_line_info *li)
 	return (parse_pipeline(&context));
 }
 
-t_command_node	*parse_line(t_shell_info *si, char *line)
+int	parse_line(t_shell_info *si, char *line, t_line_info *li)
 {
 	t_tokenv	tokenv;
-	t_line_info	li;
 
 	tokenv_init(&tokenv);
 	if (tokenize(line, &tokenv) || expand(si, &tokenv) || lex(&tokenv))
 	{
 		tokenv_clear(&tokenv);
-		return (NULL);
+		return (P_ESYNTEX);
 	}
-	ft_memset(&li, 0, sizeof(t_line_info));
-	if (parse(&tokenv, &li))
+	if (tokenv.head == NULL)
+		return (P_EMPTY);
+	if (parse(&tokenv, li))
 	{
-		ft_perror_custom("minishell", "syntex error");
 		tokenv_clear(&tokenv);
-		line_info_clear(&li);
-		return (NULL);
+		return (P_ESYNTEX);
 	}
 	tokenv_clear(&tokenv);
-	return (li.head);
+	return (P_SUCCESS);
 }
