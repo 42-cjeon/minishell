@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 17:28:52 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 18:48:47 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type)
 	else if (type == BUILTIN_ENV)
 		return (ft_env(cmd, si->envs));
 	else if (type == BUILTIN_EXIT)
-		return (ft_exit(cmd));
+		return (ft_exit(cmd, si->last_status));
 	else
 		return (1);
 }

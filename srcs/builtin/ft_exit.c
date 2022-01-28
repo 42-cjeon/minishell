@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 04:49:42 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/26 17:26:58 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/28 18:49:25 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ static int	is_argnum_error(char **str)
 	return (0);
 }
 
-int	ft_exit(char **cmd)
+int	ft_exit(char **cmd, int status)
 {
-	int		status;
 	char	*stmt;
 
-	status = 0;
 	if (!cmd || !(*cmd))
 		return (1);
 	ft_putendl_fd("exit", STDOUT_FILENO);

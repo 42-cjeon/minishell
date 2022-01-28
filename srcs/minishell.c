@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/28 15:15:59 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 18:42:26 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char *argv[], const char *envp[])
 {
 	t_shell_info	si;
 	char			*line;
+	int				result;
 
 	argc = 0;
 	argv = NULL;
@@ -58,6 +59,7 @@ int	main(int argc, char *argv[], const char *envp[])
 		process_line(line, &si);
 		free(line);
 	}
+	result = si.last_status;
 	shell_deinit(&si);
-	return (0);
+	return (result);
 }

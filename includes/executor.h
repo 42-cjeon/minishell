@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:34:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 15:51:35 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 18:47:27 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef enum e_builtin_types
 	BUILTIN_ENV,
 	BUILTIN_EXIT
 }	t_builtin_types;
+
+typedef enum e_file_type
+{
+	FT_NOTFOUND,
+	FT_DIR,
+	FT_FILE
+}	t_file_type;
 
 typedef struct s_pipes
 {
@@ -60,4 +67,7 @@ int		execute_pipeline(t_shell_info *si, t_pipeline *pipeline);
 int		execute_single_cmd(t_shell_info *si, t_pipeline *pipeline);
 void	execute_line(t_shell_info *si, t_command_node *node);
 void	replace_fd(const char *filename, int to_replace_fd, int oflag);
+void	command_perror_texit(char *cmd, char *msg, int status);
+int		check_ftype(char *cmd);
+
 #endif
