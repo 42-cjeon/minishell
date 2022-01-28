@@ -19,7 +19,7 @@ PARSER_SRCS := exp_types.c expand_filename.c expander.c expander_helper.c \
 			tk_types_escape.c tk_types_operator.c token_container.c \
 			tokenizer.c tokenizer_helper.c tokenizer_normal.c tokenizer_pair.c \
 			wildcard_container.c wildcard.c wildcard_helper.c parser_clear.c \
-			parser_cmd_clear.c
+			parser_cmd_clear.c expander_variable.c
 PARSER_SRCS := $(addprefix $(PARSER_ROOT)/, $(PARSER_SRCS))
 
 EXECUTOR_SRCS := execute_command.c execute_helper.c executor.c pipe_helper.c \
@@ -77,7 +77,7 @@ $(LIBRL) :
 
 # -- 나중에 지우기 -- #
 test : $(OBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
-	$(CC) $(CFLAGS) -g3 -fsanitize=address -lncurses -o minishell $^
+	$(CC) $(CFLAGS)  -lncurses -o minishell $^
 # --            -- #
 
 clean :

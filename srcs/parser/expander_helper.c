@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_helper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 00:42:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:49:10 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/28 10:04:17 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ t_bool	exp_iswildcard(t_token_node *node)
 	return (node->type == TK_STRING || node->type == TK_WILDCARD);
 }
 
-t_expander_result	for_each_node(t_shell_info *si,
-		t_tokenv *tokenv, t_expander expander)
+int	for_each_node(t_shell_info *si, t_tokenv *tokenv, t_expander expander)
 {
 	t_expander_context	context;
 	t_expander_result	result;
@@ -59,44 +58,4 @@ t_expander_result	for_each_node(t_shell_info *si,
 			return (result);
 	}
 	return (EXP_SUCCESS);
-}
-
-size_t	get_varname_len(char *str)
-{
-	size_t	len;
-
-	len = 0;
-	if (*str == '?')
-		return (1);
-	while (str[len] != '\0' && tk_isidentifier(str[len]))
-		len++;
-	return (len);
-}
-
-size_t	replace_variable(t_shell_info *si, char **str, const size_t start)
-{
-	size_t	len;
-	char	*varname;
-	char	*newstr;
-	char	*varvalue;
-
-	len = get_varname_len(*str + start + 1);
-	if (len == 0)
-		return (1);
-	else if (len == 1 && (*str)[start + len] == '?')
-	{
-		varvalue = ft_itoa(si->last_status);
-		newstr = ft_replace_str(*str, start, len + 1, varvalue);
-		free(varvalue);
-	}
-	else
-	{
-		varname = ft_substr(*str, start + 1, len);
-		varvalue = envs_get_value(si->envs, varname);
-		free(varname);
-		newstr = ft_replace_str(*str, start, len + 1, varvalue);
-	}
-	free(*str);
-	*str = newstr;
-	return (len);
 }
