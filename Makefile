@@ -96,4 +96,10 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all clean fclean re
+norm :
+	@echo "[-] check srcs"
+	@norminette $(SRCS)
+	@echo "[-] check includes"
+	@norminette $(INCLUDE_ROOT)
+
+.PHONY : all clean fclean re norm
