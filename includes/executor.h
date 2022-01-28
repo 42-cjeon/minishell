@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:34:08 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 16:39:14 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:51:35 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		is_builtin(t_command *command);
 int		execute_builtin(t_shell_info *si, char **cmd, t_builtin_types type);
 int		execute_subshell(t_shell_info *si, char *cmd);
 char	**get_path_arr(t_envs *envs);
-void	search_execve(char **path, char **cmd, char **envs);
+int		search_execve(char **path, char **cmd, char **envs);
 void	execute_simple_cmd(t_shell_info *si, char **cmd);
 void	close_pipes(t_pipes *pipes);
 void	fork_execute_command(t_shell_info *si, t_pipes *pipes, \

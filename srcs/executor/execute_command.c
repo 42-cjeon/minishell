@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:06:57 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 15:24:37 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 15:59:18 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "libft.h"
 #include "parser.h"
 #include "shell.h"
+#include "utils.h"
 
 int	execute_subshell(t_shell_info *si, char *cmd)
 {
@@ -35,12 +36,20 @@ int	execute_subshell(t_shell_info *si, char *cmd)
 	exit(si->last_status);
 }
 
-void	search_execve(char **path, char **cmd, char **envs)
+t_bool	is_excutable(const char *fullpath)
 {
-	size_t		i;
-	char		*cmd_temp;
-	char		*cmd_path;	
-	struct stat	st;
+	struct stat	file_stat;
+
+	if (stat(fullpath, &file_stat))
+		return (FALSE);
+	return ((file_stat.st_mode & S_IFMT) == S_IFREG);
+}
+
+int	search_execve(char **path, char **cmd, char **envs)
+{
+	size_t	i;
+	char	*cmd_temp;
+	char	*cmd_path;
 
 	i = 0;
 	while (path[i])
@@ -49,7 +58,7 @@ void	search_execve(char **path, char **cmd, char **envs)
 		{
 			cmd_temp = ft_strjoin("/", cmd[0]);
 			cmd_path = ft_strjoin(path[i], cmd_temp);
-			if (!lstat(cmd_path, &st))
+			if (is_excutable(cmd_path))
 			{
 				if (execve(cmd_path, cmd, envs))
 					ft_perror_texit(PROJECT_NAME, 1);
@@ -59,6 +68,7 @@ void	search_execve(char **path, char **cmd, char **envs)
 		}
 		i++;
 	}
+	return (1);
 }
 
 void	execute_simple_cmd(t_shell_info *si, char **cmd)
@@ -69,13 +79,16 @@ void	execute_simple_cmd(t_shell_info *si, char **cmd)
 	envs_arr = envs_to_arr(si->envs);
 	if (ft_strchr(cmd[0], '/'))
 	{
+		if (!is_excutable(cmd[0]))
+			ft_perror_texit(PROJECT_NAME, 1);
 		if (execve(cmd[0], cmd, envs_to_arr(si->envs)))
 			ft_perror_texit(PROJECT_NAME, 1);
 	}
 	path_arr = get_path_arr(si->envs);
-	if (path_arr)
+	if (!streq(cmd[0], "") && path_arr)
 		search_execve(path_arr, cmd, envs_arr);
 	envs_arr_delete(envs_arr);
+	envs_arr_delete(path_arr);
 	ft_putstr_fd(PROJECT_NAME, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(cmd[0], STDERR_FILENO);
