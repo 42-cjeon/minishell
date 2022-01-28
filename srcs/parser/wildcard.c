@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:49:52 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 11:13:16 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/28 11:31:56 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	append_matched(t_wildcard_info *wcinfo, t_tokenv *filenames)
 		ent = opendir("./");
 	if (ent == NULL)
 	{
-		if (errno == ENOENT)
+		if (errno == ENOENT || errno == EACCES)
 			return (EXP_NOMATCH);
 		ft_perror_texit(PROJECT_NAME, 1);
 	}
