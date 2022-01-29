@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:06:07 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 15:21:15 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/29 21:26:41 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,25 @@ int	parse_command(t_parser_context *context, t_command *cmd)
 	return (P_SUCCESS);
 }
 
+static t_bool	tk_iscommand(t_token_node *node)
+{
+	if (node == NULL)
+		return (FALSE);
+	return (
+		node->type == TK_STRING \
+		|| node->type == TK_SUBSHELL \
+		|| tk_isredir(node->type)
+	);
+}
+
 int	validate_command(t_token_node *curr, t_command *cmd)
 {
 	size_t	cmd_len;
 
+	if (!tk_iscommand(curr))
+		return (P_ESYNTEX);
 	cmd_len = 0;
-	while (curr && (curr->type == TK_SUBSHELL || curr->type == TK_STRING \
-		|| tk_isredir(curr->type)))
+	while (tk_iscommand(curr))
 	{
 		if (check_cmd_type(cmd, curr->type) != P_SUCCESS)
 			return (P_ESYNTEX);

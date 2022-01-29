@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 05:34:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 15:16:31 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/29 21:09:15 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	parse_line(t_shell_info *si, char *line, t_line_info *li)
 		return (P_EMPTY);
 	if (parse(&tokenv, li))
 	{
+		ft_perror_custom(PROJECT_NAME, "syntex error");
 		tokenv_clear(&tokenv);
 		return (P_ESYNTEX);
 	}
