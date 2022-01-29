@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:50:37 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/29 17:06:12 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/29 20:55:30 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,13 @@ void	wildcard_push_last(t_wildcard_info *wcinfo,
 
 void	move_next_token_node(t_expander_context *context)
 {
-	context->prev->next = context->curr->next;
+	t_token_node	*next;
+
+	next = context->curr->next;
+	if (context->prev != NULL)
+		context->prev->next = next;
 	free(context->curr);
-	context->curr = context->prev->next;
+	context->curr = next;
 }
 
 void	append_nomatch_str(t_wildcard_info *wcinfo, char *token)
