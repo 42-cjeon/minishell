@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_container.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanelee <hanelee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:04:36 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/26 16:46:03 by hanelee          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:59:30 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	strv_clear(t_str_node *node)
 	while (node)
 	{
 		next = node->next;
+		free(node->str);
 		free(node);
 		node = next;
 	}

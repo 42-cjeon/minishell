@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -fsanitize=undefined
 NAME = minishell
 
 SRCS_ROOT = srcs

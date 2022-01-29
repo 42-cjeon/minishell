@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 08:26:56 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 11:02:20 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/29 17:52:10 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ int	expand_filename(t_expander_context *context)
 	else
 		context->prev->next = matched.head;
 	matched.tail->next = context->curr;
+	wildcard_info_clear(&wcinfo);
 	return (EXP_STAY);
 }
