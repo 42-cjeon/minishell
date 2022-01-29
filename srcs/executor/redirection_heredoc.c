@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:35:28 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/29 11:50:27 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,20 @@
 #include "shell.h"
 #include "utils.h"
 
-int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
+static int	backup_stdout(void)
+{
+	int	newfd;
+
+	newfd = dup(STDOUT_FILENO);
+	if (newfd == -1)
+		ft_perror_texit(PROJECT_NAME, 1);
+	return (newfd);
+}
+
+static int	redirect_lines(int heredoc_pipe[], const t_redir *redir)
 {
 	char	*line;
-	int		heredoc_pipe[2];
 
-	replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
-	ft_pipe(heredoc_pipe);
 	while (1)
 	{
 		line = readline("> ");
@@ -45,7 +52,24 @@ int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 		ft_putendl_fd(line, heredoc_pipe[1]);
 		free(line);
 	}
-	ft_close(heredoc_pipe[1]);
-	ft_dup2(heredoc_pipe[0], STDIN_FILENO);
 	return (0);
+}
+
+int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
+{
+	int		heredoc_pipe[2];
+	int		stdout_backup;
+	int		result;
+
+	replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
+	stdout_backup = backup_stdout();
+	replace_fd(si->default_stdout, STDOUT_FILENO, O_WRONLY);
+	ft_pipe(heredoc_pipe);
+	result = redirect_lines(heredoc_pipe, redir);
+	ft_dup2(stdout_backup, STDOUT_FILENO);
+	ft_close(stdout_backup);
+	ft_dup2(heredoc_pipe[0], STDIN_FILENO);
+	ft_close(heredoc_pipe[1]);
+	ft_close(heredoc_pipe[0]);
+	return (result);
 }
