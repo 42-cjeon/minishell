@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/29 11:50:27 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 10:02:21 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ static int	backup_stdout(void)
 	return (newfd);
 }
 
-static int	redirect_lines(int heredoc_pipe[], const t_redir *redir)
+static int	redirect_lines(t_shell_info *si, int heredoc_pipe[], \
+							const t_redir *redir)
 {
 	char	*line;
 
 	while (1)
 	{
-		line = readline("> ");
+		line = shell_readline(si, "> ");
 		if (line == NULL)
 		{
 			ft_close(heredoc_pipe[0]);
@@ -61,11 +62,11 @@ int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 	int		stdout_backup;
 	int		result;
 
-	replace_fd(si->default_stdin, STDIN_FILENO, O_RDONLY);
+	replace_fd(si->default_stdin, STDIN_FILENO);
 	stdout_backup = backup_stdout();
-	replace_fd(si->default_stdout, STDOUT_FILENO, O_WRONLY);
+	replace_fd(si->default_stdout, STDOUT_FILENO);
 	ft_pipe(heredoc_pipe);
-	result = redirect_lines(heredoc_pipe, redir);
+	result = redirect_lines(si, heredoc_pipe, redir);
 	ft_dup2(stdout_backup, STDOUT_FILENO);
 	ft_close(stdout_backup);
 	ft_dup2(heredoc_pipe[0], STDIN_FILENO);

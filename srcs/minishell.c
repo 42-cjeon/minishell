@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:32:21 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/28 18:42:26 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 10:06:53 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	main(int argc, char *argv[], const char *envp[])
 {
 	t_shell_info	si;
 	char			*line;
-	int				result;
 
 	argc = 0;
 	argv = NULL;
 	shell_init(&si, envp);
-	shell_print_banner();
+	if (si.isterminal)
+		shell_print_banner();
 	while (1)
 	{
-		line = shell_readline();
+		line = shell_readline(&si, "minishell$ ");
 		if (!line)
 			break ;
 		if (streq(line, ""))
@@ -59,7 +59,6 @@ int	main(int argc, char *argv[], const char *envp[])
 		process_line(line, &si);
 		free(line);
 	}
-	result = si.last_status;
 	shell_deinit(&si);
-	return (result);
+	return (si.last_status);
 }
