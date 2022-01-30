@@ -46,9 +46,9 @@ function compile()
 function test_unit()
 {
 	RES_MS=$(echo $@ | $PROJ_PNAME 2>/dev/null)
-	# ES_MS=$?
+	ES_MS=$?
 	RES_BS=$(echo $@ | bash 2>/dev/null)
-	# ES_BS=$?
+	ES_BS=$?
 
 	printf "\n[ test $CYAN$@$RESET ] "
 	if [ "$RES_MS" == "$RES_BS" ] && [ "$ES_MS" == "$ES_BS" ]; then
@@ -67,13 +67,13 @@ function test_unit()
 		printf "%s\n" "-------------------------------------------"
 		exit
 	fi
-	# if [ "$ES_MS" == "$ES_BS" ]; then
-	# 	printf $WHITE" - ms status : $ES_MS$RESET\n"
-	# 	printf $WHITE" - bs status : $ES_BS$RESET\n"
-	# else
-	# 	printf $WHITE" - ms status : $RED_BOLD$ES_MS$RESET\n"
-	# 	printf $WHITE" - bs status : $GREEN_BOLD$ES_BS$RESET\n"
-	# fi
+	if [ "$ES_MS" == "$ES_BS" ]; then
+		printf $WHITE" - ms status : $ES_MS$RESET\n"
+		printf $WHITE" - bs status : $ES_BS$RESET\n"
+	else
+		printf $WHITE" - ms status : $RED_BOLD$ES_MS$RESET\n"
+		printf $WHITE" - bs status : $GREEN_BOLD$ES_BS$RESET\n"
+	fi
 	sleep $TIME_INTVL_SHORT
 }
 
@@ -117,6 +117,22 @@ function test_builtin_echo()
 	printf "\n\n"
 }
 
+function test_builtin_exit()
+{
+	printf "$MAGENTA_BOLD [ !- Test \"echo\" started! ]$RESET\n"
+	sleep $TIME_INTVL_LONG
+
+	test_unit 'exit'
+	test_unit 'exit 42'
+	test_unit 'exit 42 53 68'
+	test_unit 'exit 9223372036854775807'
+	# exit -9223372036854775808
+	# exit wrong
+	# exit wrong statement
+
+	printf "\n\n"
+}
+
 function test_env_expansion()
 {
 	printf "$MAGENTA_BOLD [ !- Test \"env expansion\" started! ]$RESET\n"
@@ -138,10 +154,45 @@ function test_env_expansion()
 	printf "\n\n"
 }
 
+function test_dquote()
+{
+	printf "$MAGENTA_BOLD [ !- Test \"double quote\" started! ]$RESET\n"
+	sleep $TIME_INTVL_LONG
+
+	test_unit '"cat lol.c | cat > lol.c"'
+	test_unit '"cmddoesnotexist -rpak alkjdf"'
+
+	printf "\n\n"
+}
+
+function test_squote()
+{
+	printf "$MAGENTA_BOLD [ !- Test \"single quote\" started! ]$RESET\n"
+	sleep $TIME_INTVL_LONG
+
+	test_unit ''$HOME''
+
+	printf "\n\n"
+}
+
+function test_redirection()
+{
+	printf "$MAGENTA_BOLD [ !- Test \"redirection\" started! ]$RESET\n"
+	sleep $TIME_INTVL_LONG
+
+	test_unit 'ls | wc -l'	
+
+	printf "\n\n"
+}
+
 # Processes
 # check_norm; compile;
-test_cmd_simple
-test_cmd_argument
-test_builtin_echo
-test_env_expansion
+# test_cmd_simple
+# test_cmd_argument
+# test_builtin_echo
+# test_builtin_exit
+# test_env_expansion
+# test_dquote
+# test_squote
+test_redirection
 
