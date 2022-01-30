@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 19:31:22 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/20 10:35:12 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 12:53:46 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int	tokenize(const char *raw_line, t_tokenv *tokenv)
 	context.cursor = 0;
 	result = select_next_tokenizer(&context);
 	if (result == TKZR_EUNEXPECTEDNL)
-		ft_perror_custom("minishell", "unclosed sequence detected");
+		ft_perror_custom(PROJECT_NAME, "unclosed sequence detected");
 	return (result);
 }

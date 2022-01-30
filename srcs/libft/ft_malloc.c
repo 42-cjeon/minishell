@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 20:34:39 by hanelee           #+#    #+#             */
-/*   Updated: 2022/01/27 13:42:08 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 12:53:42 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ void	*ft_malloc(size_t size)
 
 	ret = malloc(size);
 	if (ret == NULL)
-		ft_perror_texit("minishell", 1);
+		ft_perror_texit(PROJECT_NAME, 1);
 	return (ret);
 }
