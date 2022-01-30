@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address -fsanitize=undefined
+CFLAGS = -Wall -Wextra -Werror
 NAME = minishell
 
 SRCS_ROOT = srcs
@@ -29,7 +29,7 @@ EXECUTOR_SRCS := $(addprefix $(EXECUTOR_ROOT)/, $(EXECUTOR_SRCS))
 UTILS_SRCS := find_last_slash.c move_string.c replace_str.c streq.c
 UTILS_SRCS := $(addprefix $(UTILS_ROOT)/, $(UTILS_SRCS))
 
-SHELL_SRCS := shell.c shell_print.c
+SHELL_SRCS := shell.c shell_print.c shell_readline.c
 SHELL_SRCS := $(addprefix $(SHELL_ROOT)/, $(SHELL_SRCS))
 
 ENVS_SRCS := cenv.c cenv_print.c envs.c envs_func.c
@@ -45,53 +45,26 @@ SRCS = $(PARSER_SRCS) $(MAIN_SRCS) $(SHELL_SRCS) $(UTILS_SRCS) \
 			$(EXECUTOR_SRCS) $(ENVS_SRCS) $(BUILTIN_SRCS)
 OBJS = $(SRCS:.c=.o)
 
-# -- 나중에 지우기 -- #
-TEST_SRCS := minishell.c
-TEST_SRCS := $(addprefix $(SRCS_ROOT)/test/, $(TEST_SRCS))
-TSRCS = $(PARSER_SRCS) $(TEST_SRCS) $(SHELL_SRCS) $(UTILS_SRCS) \
-			$(EXECUTOR_SRCS) $(ENVS_SRCS) $(BUILTIN_SRCS)
-TOBJS = $(TSRCS:.c=.o)
-# --            -- #
-
 LIBFT_ROOT = $(SRCS_ROOT)/libft
 LIBFT = $(LIBFT_ROOT)/libft.a
 
-LIBRL_ROOT = $(SRCS_ROOT)/readline
-LIBRL_INCLUDE_ROOT = $(SRCS_ROOT)
-LIBRL = $(LIBRL_ROOT)/libreadline.a
-LIBRL_HISTORY = $(LIBRL_ROOT)/libhistory.a
-
 all : $(NAME)
 
-$(NAME) : $(OBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
-	$(CC) $(CFLAGS) -lncurses -o $@ $^
+$(NAME) : $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -lreadline -lhistory -lncurses -o $@ $^
 
 %.o : %.c
-	$(CC) -I$(INCLUDE_ROOT) -I$(LIBRL_INCLUDE_ROOT) -c $(CFLAGS) -o $@ $<
+	$(CC) -I$(INCLUDE_ROOT) -c $(CFLAGS) -o $@ $<
 
 $(LIBFT) :
 	@$(MAKE) -C $(LIBFT_ROOT) INCLUDE_ROOT=$(realpath $(INCLUDE_ROOT)) all
 
-$(LIBRL) :
-	@$(MAKE) -C $(LIBRL_ROOT) all
-
-# -- 나중에 지우기 -- #
-test : $(OBJS) $(LIBFT) $(LIBRL) $(LIBRL_HISTORY)
-	$(CC) $(CFLAGS)  -lncurses -o minishell $^
-# --            -- #
-
 clean :
 	@$(MAKE) -C $(LIBFT_ROOT) clean
-	@$(MAKE) -C $(LIBRL_ROOT) clean
 	rm -f $(OBJS)
-# -- 나중에 지우기 -- #
-	rm -f $(TOBJS)
-	rm -f test
-# --           -- #
 
 fclean : clean
 	@$(MAKE) -C $(LIBFT_ROOT) fclean
-	@$(MAKE) -C $(LIBRL_ROOT) clean
 	rm -f $(NAME)
 
 re : fclean all
