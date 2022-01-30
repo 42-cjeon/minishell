@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/29 17:52:04 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 11:32:54 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	fork_execute_command(t_shell_info *si, t_pipes *pipes, \
 		ft_perror_texit(PROJECT_NAME, 1);
 	else if (pid == 0)
 	{
+		if (handle_redirect(si, command->redir))
+			exit(1);
 		close_pipes(pipes);
 		type = is_builtin(command);
 		if (type)
@@ -50,7 +52,6 @@ int	execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	pipes_init(&pipes);
 	move_next_pipe(&pipes, FALSE);
 	replace_stdio_fd(si, &pipes);
-	handle_redirect(si, pipeline->commands[0].redir);
 	fork_execute_command(si, \
 		&pipes, &pipeline->commands[0], &pipeline->childs[0]);
 	i = 1;
@@ -58,7 +59,6 @@ int	execute_pipeline(t_shell_info *si, t_pipeline *pipeline)
 	{
 		move_next_pipe(&pipes, i + 1 == pipeline->len);
 		replace_stdio_fd(si, &pipes);
-		handle_redirect(si, pipeline->commands[i].redir);
 		fork_execute_command(si, \
 			&pipes, &pipeline->commands[i], &pipeline->childs[i]);
 		i++;

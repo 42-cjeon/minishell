@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:03 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/30 10:02:21 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 11:31:50 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,8 @@
 #include "fcntl.h"
 #include "libft.h"
 #include "parser.h"
-#include "readline/readline.h"
 #include "shell.h"
 #include "utils.h"
-
-static int	backup_stdout(void)
-{
-	int	newfd;
-
-	newfd = dup(STDOUT_FILENO);
-	if (newfd == -1)
-		ft_perror_texit(PROJECT_NAME, 1);
-	return (newfd);
-}
 
 static int	redirect_lines(t_shell_info *si, int heredoc_pipe[], \
 							const t_redir *redir)
@@ -63,7 +52,7 @@ int	handle_redir_heredoc(t_shell_info *si, const t_redir *redir)
 	int		result;
 
 	replace_fd(si->default_stdin, STDIN_FILENO);
-	stdout_backup = backup_stdout();
+	stdout_backup = ft_dup(STDOUT_FILENO);
 	replace_fd(si->default_stdout, STDOUT_FILENO);
 	ft_pipe(heredoc_pipe);
 	result = redirect_lines(si, heredoc_pipe, redir);
