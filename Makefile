@@ -12,6 +12,10 @@ BUILTIN_ROOT = $(SRCS_ROOT)/builtin
 
 INCLUDE_ROOT = includes
 
+READLINE_ROOT = $(shell brew --prefix readline)
+READLINE_INCLUDE = $(READLINE_ROOT)/include
+READLINE_LIB = $(READLINE_ROOT)/lib
+
 PARSER_SRCS := exp_types.c expand_filename.c expander.c expander_helper.c \
 			expander_split.c lexer.c parser.c parser_command.c \
 			parser_container.c parser_helper.c parser_logical_oper.c \
@@ -51,10 +55,10 @@ LIBFT = $(LIBFT_ROOT)/libft.a
 all : $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -lreadline -lhistory -lncurses -o $@ $^
+	$(CC) $(CFLAGS) -L$(READLINE_LIB) -lreadline -lhistory -lncurses -o $@ $^
 
 %.o : %.c
-	$(CC) -I$(INCLUDE_ROOT) -c $(CFLAGS) -o $@ $<
+	$(CC) -I$(READLINE_INCLUDE) -I$(INCLUDE_ROOT) -c $(CFLAGS) -o $@ $<
 
 $(LIBFT) :
 	@$(MAKE) -C $(LIBFT_ROOT) INCLUDE_ROOT=$(realpath $(INCLUDE_ROOT)) all
