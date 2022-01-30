@@ -15,7 +15,7 @@ SRCS = \
 	ft_llist.c ft_llist_node.c ft_llist_push.c ft_llist_pop.c \
 	ft_bstree_node.c ft_bstree_node_traverse.c ft_bstree_node_erase.c \
 	ft_bstree.c ft_bstree_func.c ft_malloc.c ft_perror.c \
-	ft_dup2.c ft_pipe.c ft_close.c ft_wait.c
+	ft_dup.c ft_dup2.c ft_pipe.c ft_close.c ft_wait.c
 
 OBJS = $(SRCS:.c=.o)
 

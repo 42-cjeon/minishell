@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:19:58 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 13:55:37 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 09:18:59 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_perror_custom_texit(const char *prefix,
 void	*ft_malloc(size_t size);
 int		ft_close(int fildes);
 int		ft_dup2(int fildes, int fildes2);
+int		ft_dup(int fd);
 int		ft_pipe(int fildes[2]);
 int		ft_wtermsig(int status);
 int		ft_wexitstatus(int status);
