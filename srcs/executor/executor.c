@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 20:01:41 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/30 11:32:54 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 12:47:35 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	fork_execute_command(t_shell_info *si, t_pipes *pipes, \
 			exit(execute_subshell(si, command->data.s));
 		else if (command->type == C_COMMAND)
 			execute_simple_cmd(si, command->data.c);
+		else if (command->type == C_NONE)
+			exit(0);
 	}
 	else if (pid > 0)
 		*child = pid;
