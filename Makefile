@@ -54,6 +54,8 @@ LIBFT = $(LIBFT_ROOT)/libft.a
 
 all : $(NAME)
 
+bonus: all
+
 $(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -L$(READLINE_LIB) -lreadline -lhistory -lncurses -o $@ $^
 
@@ -79,4 +81,4 @@ norm :
 	@echo "[-] check includes"
 	@norminette $(INCLUDE_ROOT)
 
-.PHONY : all clean fclean re norm
+.PHONY : all clean fclean re norm bonus
