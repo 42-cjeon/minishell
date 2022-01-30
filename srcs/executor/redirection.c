@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:07:06 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/28 23:52:16 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 13:41:02 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ int	handle_redirect(t_shell_info *si, t_redir *redir)
 			is_redir_fail = handle_redir_heredoc(si, redir);
 		redir = redir->next;
 	}
+	si->last_status = 1;
 	return (is_redir_fail);
 }

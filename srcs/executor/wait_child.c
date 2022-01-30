@@ -6,7 +6,7 @@
 /*   By: cjeon <cjeon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 11:18:59 by cjeon             #+#    #+#             */
-/*   Updated: 2022/01/27 14:08:29 by cjeon            ###   ########.fr       */
+/*   Updated: 2022/01/30 13:50:44 by cjeon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ int	wait_childs(t_pipeline *pipeline)
 	i = 0;
 	while (i < pipeline->len)
 	{
-		if (waitpid(pipeline->childs[i], &status, 0) == -1)
+		if (pipeline->childs[i] == 0)
+			status = (1U << 8);
+		else if (waitpid(pipeline->childs[i], &status, 0) == -1)
 			ft_perror_texit(PROJECT_NAME, 1);
 		i++;
 	}
